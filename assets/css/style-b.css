@@ -41,6 +41,8 @@
 .variant-b .table th { background: var(--trust); color: #fff; }
 .table-b td:last-child, .table-b th:last-child { text-align: right; }
 .table-b th, .table-b td { padding: 12px 12px; }
+.table-b td:last-child { white-space: nowrap; }
+.table-b small { font-size: 16px; color: var(--text-soft); }
 @media (max-width: 480px) { .table-b { font-size: 17px; } }
 .notice--plain { background: #fff; border-left-color: var(--trust); margin-top: 20px; }
 .notice--plain ul { font-size: 18px; }
