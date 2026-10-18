@@ -17,12 +17,12 @@ window.LANDING_CONFIG = {
 
   // Что подтверждено документально. Пока есть хоть один false — на странице красная плашка «BOZZA — НЕ ПУБЛИКОВАТЬ».
   verified: {
-    label: false,      // состав, количество на суточную дозу, 30 капсул, фото упаковки = упаковка, продаваемая в Италии
+    label: true,       // состав и упаковка сверены с этикеткой (18.10.2026)
     usage: true,       // применение и предупреждения — по инструкции производителя (получено 18.10.2026)
-    price: false,      // 39 € за 1 упаковку — коммерческое подтверждение
+    price: true,       // 39 € за 1 упаковку — подтверждено (18.10.2026)
     shipping: false,   // price.shipping и price.extraFees заполнены
     terms: false,      // способы оплаты, сроки и география доставки, продавец (text.seller*)
-    caller: false,     // роль Geberich (звонит) и Neo Elementum OÜ (получает данные)
+    caller: true,      // звонит Geberich — подтверждено (18.10.2026); данные получает Neo Elementum OÜ
     legal: false       // privacy.html, termini.html, текст согласия в форме согласованы юристом
   },
 
@@ -30,7 +30,7 @@ window.LANDING_CONFIG = {
   text: {
     productName: "ArtroFlex Active",
     partnerName: "Neo Elementum OÜ",       // партнёрская сеть (Webvork), получает заявки
-    callerName: "Geberich",                // от чьего имени звонит оператор — ПОДТВЕРДИТЬ
+    callerName: "Geberich",                // звонит оператор Geberich (подтверждено)
     sellerName: "[RAGIONE SOCIALE VENDITORE]",
     sellerAddress: "[INDIRIZZO SEDE LEGALE]",
     sellerVat: "[PARTITA IVA]",
