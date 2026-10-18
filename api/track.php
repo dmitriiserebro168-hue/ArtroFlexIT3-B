@@ -32,6 +32,7 @@ $pv  = substr(preg_replace('/[^a-z0-9]/', '', strtolower((string)$in['pv'])), 0,
 $dev = (($in['dev'] ?? '') === 'mobile') ? 'mobile' : 'desktop';
 $src = substr(preg_replace('/[^\w.\-]/u', '', (string)($in['src'] ?? '')), 0, 100);
 $cmp = substr(preg_replace('/[^\w.\-]/u', '', (string)($in['cmp'] ?? '')), 0, 100);
+$lv  = substr(preg_replace('/[^a-z0-9.\-]/', '', strtolower((string)($in['lv'] ?? ''))), 0, 20); // вариант лендинга
 if ($pv === '') {
     http_response_code(204);
     exit;
@@ -54,10 +55,10 @@ $pdo = lp_db($cfg);
 if ($pdo && $rows) {
     try {
         $now = gmdate('Y-m-d H:i:s');
-        $st = $pdo->prepare('INSERT INTO track_event (created_at, pv, type, el, val, t, device, src, cmp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)');
+        $st = $pdo->prepare('INSERT INTO track_event (created_at, pv, type, el, val, t, device, src, cmp, lv) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
         $pdo->beginTransaction();
         foreach ($rows as $r) {
-            $st->execute([$now, $pv, $r[0], $r[1], $r[2], $r[3], $dev, $src, $cmp]);
+            $st->execute([$now, $pv, $r[0], $r[1], $r[2], $r[3], $dev, $src, $cmp, $lv]);
         }
         $pdo->commit();
         if (mt_rand(1, 500) === 1) {

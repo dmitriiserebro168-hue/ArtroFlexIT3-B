@@ -1,17 +1,18 @@
-# Выкладка лендинга на it3.artro-flex.com по FTPS при каждом push в main (и вручную: Actions → Deploy → Run workflow).
-# Загружаются только изменённые файлы (состояние хранится на сервере в .ftp-deploy-sync-state.json).
-# Схема та же, что у ArtroFlexIT2.
+# Выкладка ВАРИАНТА B (репозиторий ArtroFlexIT3-B) на it3b.artro-flex.com по FTPS при каждом push в main
+# (и вручную: Actions → Deploy → Run workflow). Загружаются только изменённые файлы.
 #
-# Секреты репозитория (Settings → Secrets and variables → Actions → Secrets):
-#   FTP_SERVER    — ftp.artro-flex.com
-#   FTP_USERNAME  — it3.artroflex@it3.artro-flex.com
-#   FTP_PASSWORD  — пароль этого FTP-аккаунта
+# ВАЖНО: без пароля выкладка не запускается, а FTP-аккаунт варианта A запрещён —
+# чтобы B случайно не перезаписал вариант A на it3.artro-flex.com.
+#
+# Секреты репозитория ArtroFlexIT3-B (Settings → Secrets and variables → Actions → Secrets):
+#   FTP_SERVER    — ftp.artro-flex.com (необязательно, это значение по умолчанию)
+#   FTP_USERNAME  — it3b.artroflex@artro-flex.com (необязательно, это значение по умолчанию)
+#   FTP_PASSWORD  — пароль FTP-аккаунта it3b (ОБЯЗАТЕЛЬНО)
 # Переменная (вкладка Variables, необязательно):
-#   FTP_SERVER_DIR — папка сайта относительно корня FTP-аккаунта.
-#                    FTP-аккаунт it3 смотрит прямо в /home/artrofle/it3.artro-flex — оставьте пустой (будет ./).
+#   FTP_SERVER_DIR — папка сайта B относительно корня FTP-аккаунта (по умолчанию ./).
 #
-# Токен Webvork, пароль редактора отзывов и соль — НЕ в GitHub, а в /home/artrofle/artroflex3-config.php
-# (уровнем выше папки сайта, загружается один раз вручную). Образец — config.example.php.
+# Токен Webvork и пароли — НЕ в GitHub, а в artroflex3-config.php уровнем выше папки сайта
+# (api/config.php ищет его в dirname(api, 2)). Образец — config.example.php.
 
 name: Deploy
 
@@ -21,7 +22,7 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: deploy-it3
+  group: deploy-it3-b
   cancel-in-progress: false
 
 permissions:
@@ -37,11 +38,26 @@ jobs:
       - name: Проверка синтаксиса PHP
         run: for f in api/*.php admin/*.php; do php -l "$f"; done
 
+      - name: Проверка секретов FTP
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER || 'ftp.artro-flex.com' }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME || 'it3b.artroflex@artro-flex.com' }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          missing=""
+          [ -n "$FTP_SERVER" ]   || missing="$missing FTP_SERVER"
+          [ -n "$FTP_USERNAME" ] || missing="$missing FTP_USERNAME"
+          [ -n "$FTP_PASSWORD" ] || missing="$missing FTP_PASSWORD"
+          if [ -n "$missing" ]; then echo "::error::Не заданы секреты:$missing — выкладка B остановлена"; exit 1; fi
+          case "$FTP_USERNAME" in
+            it3.artroflex@it3.artro-flex.com) echo "::error::Это FTP-аккаунт варианта A — B туда не выкладываем"; exit 1;;
+          esac
+
       - name: Upload via FTPS
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER || 'ftp.artro-flex.com' }}
-          username: ${{ secrets.FTP_USERNAME || 'it3.artroflex@it3.artro-flex.com' }}
+          username: ${{ secrets.FTP_USERNAME || 'it3b.artroflex@artro-flex.com' }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           port: 21

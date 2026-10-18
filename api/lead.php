@@ -41,8 +41,8 @@ function lead_log(array $cfg, string $status, array $extra = []): void
         $pdo = lp_db($cfg);
         if ($pdo) {
             $st = $pdo->prepare('INSERT INTO lead_log
-                (created_at, status, lead_id, guid, api_msg, name, phone, ip, utm, user_agent, referer, attempts, duration_ms)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
+                (created_at, status, lead_id, guid, api_msg, name, phone, ip, utm, user_agent, referer, attempts, duration_ms, landing_version)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)');
             $st->execute([
                 gmdate('Y-m-d H:i:s'),
                 $status,
@@ -57,6 +57,7 @@ function lead_log(array $cfg, string $status, array $extra = []): void
                 $LEAD['ref'] ?? null,
                 $ATTEMPTS_LOG ? json_encode($ATTEMPTS_LOG, JSON_UNESCAPED_UNICODE) : null,
                 (int)round((microtime(true) - $LEAD['started']) * 1000),
+                $LEAD['lv'] ?? null,
             ]);
             if (mt_rand(1, 100) === 1) {
                 $pdo->exec('DELETE FROM lead_log WHERE created_at < UTC_TIMESTAMP() - INTERVAL ' . LOG_KEEP_DAYS . ' DAY');
@@ -167,7 +168,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     out(405, ['ok' => false, 'error' => 'method']);
 }
 $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-if ($origin !== '' && !empty($cfg['allowed_origins']) && !in_array($origin, $cfg['allowed_origins'], true)) {
+$sameOrigin = $origin === 'https://' . ($_SERVER['HTTP_HOST'] ?? ''); // запрос со своей же страницы
+if ($origin !== '' && !$sameOrigin && !empty($cfg['allowed_origins']) && !in_array($origin, $cfg['allowed_origins'], true)) {
     out(403, ['ok' => false, 'error' => 'origin']);
 }
 $raw = file_get_contents('php://input', false, null, 0, 8192);
@@ -185,6 +187,7 @@ $LEAD['phone'] = substr(preg_replace('/[^\d+]/', '', (string)($in['phone'] ?? ''
 $LEAD['ip']    = $ip;
 $LEAD['ua']    = mb_substr((string)($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 255);
 $LEAD['ref']   = mb_substr((string)($_SERVER['HTTP_REFERER'] ?? ''), 0, 255);
+$LEAD['lv']    = substr(preg_replace('/[^a-z0-9.\-]/', '', strtolower((string)($in['landing_version'] ?? ''))), 0, 20) ?: null;
 $LEAD['utm']   = [];
 foreach (['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'campaign_id', 'adset_id', 'ad_id', 'fbclid'] as $k) {
     $v = $in['params'][$k] ?? '';
@@ -371,10 +374,11 @@ if (function_exists('litespeed_finish_request')) litespeed_finish_request();
 elseif (function_exists('fastcgi_finish_request')) fastcgi_finish_request();
 
 tg_notify($cfg, implode("\n", [
-    '✅ <b>Новый лид — ' . tg_esc($_SERVER['HTTP_HOST'] ?? 'it3.artro-flex.com') . '</b>',
+    '✅ <b>Новый лид — ' . tg_esc($_SERVER['HTTP_HOST'] ?? 'it3b.artro-flex.com') . '</b>',
     '👤 Имя: ' . tg_esc($name),
     '📞 Телефон: ' . tg_esc($phone),
     '📨 Ответ Webvork: <code>' . tg_esc(mb_substr((string)$resp, 0, 500)) . '</code>',
+    '🅱️ Вариант: ' . tg_esc($LEAD['lv'] ?? '—'),
     '🎯 Кампания: ' . tg_esc(($LEAD['utm']['utm_campaign'] ?? '—') . ' / ' . ($LEAD['utm']['utm_source'] ?? '—')),
     '🕒 ' . date('d.m.Y H:i') . ' (Рим)',
 ]));

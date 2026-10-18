@@ -22,9 +22,8 @@
     window.dataLayer.push(data);
   }
 
-  // Пиксель Meta загружается сразу (Meta его «видит»), но в режиме согласия:
-  // до «Accetta» события не отправляются — Meta держит их, пока не придёт consent 'grant'.
-  function loadPixel(id, granted) {
+  // Пиксель Meta. При requireCookieConsent скрипт Meta не загружается вовсе, пока посетитель не нажал «Accetta».
+  function loadPixel(id) {
     /* eslint-disable */
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
     n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -32,7 +31,6 @@
     t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
     document,'script','https://connect.facebook.net/en_US/fbevents.js');
     /* eslint-enable */
-    if (!granted) window.fbq('consent', 'revoke');
     window.fbq('init', id);
     window.fbq('track', 'PageView');
   }
@@ -42,7 +40,7 @@
     if (!a.metaPixelId || isDemo) return;
     var choice = storeGet('localStorage', 'cookie_consent');
     var granted = !a.requireCookieConsent || choice === 'accept';
-    loadPixel(a.metaPixelId, granted);
+    if (granted) loadPixel(a.metaPixelId);
     if (granted || choice === 'deny') return;
     var box = $('#cookie');
     box.hidden = false;
@@ -51,7 +49,7 @@
         var v = b.getAttribute('data-cookie');
         storeSet('localStorage', 'cookie_consent', v);
         box.hidden = true;
-        if (v === 'accept' && window.fbq) window.fbq('consent', 'grant');
+        if (v === 'accept') loadPixel(a.metaPixelId);
       });
     });
   }
@@ -79,7 +77,6 @@
       if (v != null && v !== '') el.textContent = v;
       if (el.classList.contains('ph') && v && v.indexOf('[') === -1) el.classList.remove('ph');
     });
-    if (t.productName) document.title = t.productName + ' – Informazioni e offerta in Italia';
   }
 
   function applyClaims() {
@@ -97,6 +94,28 @@
     });
   }
 
+  /* ---------- Блокеры публикации (ТЗ B: публиковать только после подтверждения данных) ---------- */
+  var VERIFY_LABELS = {
+    label: 'состав, дозировки и упаковка сверены с этикеткой, продаваемой в Италии',
+    usage: 'способ применения и предупреждения — по инструкции производителя',
+    price: 'цена 39 € за 1 упаковку подтверждена коммерчески',
+    shipping: 'стоимость доставки и обязательные доплаты (price.shipping, price.extraFees)',
+    terms: 'оплата, сроки и география доставки, продавец и его контакты',
+    caller: 'кто звонит и кто получает данные (Geberich / Neo Elementum OÜ)',
+    legal: 'privacy.html и termini.html завершены и согласованы',
+    analytics: 'cookie/Pixel и события Meta согласованы'
+  };
+  function showBlockers() {
+    var box = $('#blockers');
+    var v = cfg.verified;
+    if (!box || !v) return;
+    var open = Object.keys(VERIFY_LABELS).filter(function (k) { return v[k] !== true; });
+    if (!open.length) return;
+    box.innerHTML = '<strong>BOZZA — НЕ ПУБЛИКОВАТЬ.</strong> Не подтверждено (config.js → verified):<ul>' +
+      open.map(function (k) { return '<li>' + VERIFY_LABELS[k] + '</li>'; }).join('') + '</ul>';
+    box.hidden = false;
+  }
+
   /* ---------- Цены ---------- */
   var eur = new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' });
   function fmt(v) { return typeof v === 'number' ? eur.format(v) : '€ —'; }
@@ -104,9 +123,9 @@
   function applyPrices(expired) {
     var p = cfg.price || {};
     var current = expired ? p.afterExpiry : p.current;
-    var parts = [current, p.shipping, p.extraFees];
-    var total = typeof current === 'number'
-      ? parts.reduce(function (s, v) { return s + (typeof v === 'number' ? v : 0); }, 0)
+    // Итог — только при известной стоимости доставки; extraFees: null — доплат нет
+    var total = typeof current === 'number' && typeof p.shipping === 'number'
+      ? current + p.shipping + (typeof p.extraFees === 'number' ? p.extraFees : 0)
       : null;
     var values = {
       old: fmt(p.old),
@@ -117,7 +136,9 @@
       discountPercent: String(p.discountPercent != null ? p.discountPercent : '')
     };
     $$('[data-price]').forEach(function (el) {
-      el.textContent = values[el.getAttribute('data-price')];
+      var v = values[el.getAttribute('data-price')];
+      el.textContent = v;
+      el.classList.toggle('ph', v === '€ —');
     });
     $$('[data-extra-fees]').forEach(function (el) { el.hidden = typeof p.extraFees !== 'number'; });
 
@@ -191,6 +212,8 @@
       startTimer(hours ? personalEndsAt(hours) : o.fallbackEndsAt);
     };
     applyPrices(false);
+    // В варианте B таймера и остатка нет — не запускаем и ничего не пишем в браузер
+    if (!$('[data-timer], [data-offer-stock], [data-offer-end-date]')) return;
     if (isDemo || !cfg.form || !cfg.form.offerEndpoint || !window.fetch) { fallback(); return; }
     fetch(cfg.form.offerEndpoint, { cache: 'no-store' })
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
@@ -279,6 +302,7 @@
 
   function initReviews() {
     var ep = cfg.form && cfg.form.reviewsEndpoint;
+    if (!$('[data-reviews-track], [data-experts-track]')) return Promise.resolve();
     if (isDemo || !ep || !window.fetch) return Promise.resolve();
     var get = function (url) { return fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); };
     return Promise.all([
@@ -421,7 +445,7 @@
     var heroVisible = true, formVisible = false;
     function update() { sticky.hidden = heroVisible || formVisible || done; }
     new IntersectionObserver(function (en) { heroVisible = en[0].isIntersecting; update(); })
-      .observe($('.hero .btn--cta'));
+      .observe($('.hero .btn--cta') || $('[data-track="sec-hero"]'));
     new IntersectionObserver(function (en) { formVisible = en[0].isIntersecting; update(); }, { rootMargin: '0px 0px -20% 0px' })
       .observe($('#richiesta'));
     updateSticky = update;
@@ -611,6 +635,7 @@
 
   /* ---------- Старт ---------- */
   if (isDemo) $('#demo-banner').hidden = false;
+  showBlockers();
   applyTexts();
   applyClaims();
   initOffer();

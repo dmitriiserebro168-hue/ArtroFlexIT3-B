@@ -12,6 +12,7 @@
     var ENDPOINT = 'api/track.php';
     var qs = new URLSearchParams(location.search);
     var meta = {
+      lv: ((window.LANDING_CONFIG || {}).landingVersion || '').slice(0, 20), // вариант A/B
       pv: (Date.now().toString(36) + Math.random().toString(36).slice(2, 10)).slice(0, 16),
       src: (qs.get('utm_source') || '').slice(0, 100),
       cmp: (qs.get('utm_campaign') || '').slice(0, 100),
@@ -28,7 +29,7 @@
     function pushOnce(key, type, el, val) { if (once[key]) return; once[key] = 1; push(type, el, val); }
     function flush() {
       while (buf.length) {
-        var body = JSON.stringify({ pv: meta.pv, src: meta.src, cmp: meta.cmp, dev: meta.dev, e: buf.splice(0, 50) });
+        var body = JSON.stringify({ lv: meta.lv, pv: meta.pv, src: meta.src, cmp: meta.cmp, dev: meta.dev, e: buf.splice(0, 50) });
         if (DEBUG) continue;
         try {
           if (navigator.sendBeacon) navigator.sendBeacon(ENDPOINT, new Blob([body], { type: 'text/plain' }));

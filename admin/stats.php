@@ -183,6 +183,13 @@ $params = [];
 if ($src !== '') { $where .= ' AND src = ?'; $params[] = $src; }
 if ($dev !== '') { $where .= ' AND device = ?'; $params[] = $dev; }
 
+// Вариант лендинга: B пишет landing_version = artro-it-b-1, всё остальное (пусто, tsl-it-1.0) — A
+const B_VERSION = 'artro-it-b-1';
+$ver = in_array($_GET['v'] ?? '', ['a', 'b'], true) ? $_GET['v'] : '';
+$leadVer = '';
+if ($ver === 'b') { $where .= " AND lv = '" . B_VERSION . "'"; $leadVer = " AND landing_version = '" . B_VERSION . "'"; }
+if ($ver === 'a') { $where .= " AND lv <> '" . B_VERSION . "'"; $leadVer = " AND (landing_version IS NULL OR landing_version <> '" . B_VERSION . "')"; }
+
 function q(PDO $pdo, string $sql, array $params) { $st = $pdo->prepare($sql); $st->execute($params); return $st; }
 function pct($a, $b) { return $b > 0 ? round($a / $b * 100, 1) : 0; }
 function link_with(array $over): string { $q = array_merge($_GET, $over); foreach ($q as $k => $v) { if ($v === '' || $v === null) unset($q[$k]); } return 'stats.php' . ($q ? '?' . http_build_query($q) : ''); }
@@ -200,6 +207,10 @@ function rome($utc) { $d = new DateTime((string)$utc, new DateTimeZone('UTC')); 
   <div class="card filters">
     <?php foreach ([1 => 'Сутки', 7 => '7 дней', 30 => '30 дней', 90 => '90 дней'] as $d => $label): ?>
       <a class="<?= $d === $days ? 'on' : '' ?>" href="<?= h(link_with(['d' => $d])) ?>"><?= $label ?></a>
+    <?php endforeach; ?>
+    <span class="muted">|</span>
+    <?php foreach (['' => 'A + B', 'a' => 'Вариант A', 'b' => 'Вариант B'] as $k => $label): ?>
+      <a class="<?= $k === $ver ? 'on' : '' ?>" href="<?= h(link_with(['v' => $k])) ?>"><?= $label ?></a>
     <?php endforeach; ?>
     <?php if ($tab === 'behavior'):
       $sources = $pdo->query("SELECT src, COUNT(DISTINCT pv) n FROM track_event WHERE type='load' AND created_at >= UTC_TIMESTAMP() - INTERVAL 90 DAY GROUP BY src ORDER BY n DESC LIMIT 30")->fetchAll(PDO::FETCH_ASSOC); ?>
@@ -221,7 +232,7 @@ function rome($utc) { $d = new DateTime((string)$utc, new DateTimeZone('UTC')); 
 
 <?php if ($tab === 'leads'):
     // ---------------- Журнал заявок ----------------
-    $lw = 'created_at >= UTC_TIMESTAMP() - INTERVAL ' . $days . ' DAY';
+    $lw = 'created_at >= UTC_TIMESTAMP() - INTERVAL ' . $days . ' DAY' . $leadVer;
     $byStatus = $pdo->query("SELECT status, COUNT(*) n FROM lead_log WHERE $lw GROUP BY status ORDER BY n DESC")->fetchAll(PDO::FETCH_KEY_PAIR);
     $totalLog = array_sum($byStatus);
     $okCount  = (int)($byStatus['ok'] ?? 0);
@@ -302,7 +313,7 @@ function rome($utc) { $d = new DateTime((string)$utc, new DateTimeZone('UTC')); 
     foreach (['focus-name', 'focus-phone', 'submit', 'error-phone', 'error-name', 'error-consent', 'error-alert', 'lead-ok'] as $f) {
         $form[$f] = (int)q($pdo, "SELECT COUNT(DISTINCT pv) FROM track_event WHERE type='form' AND el=? AND $where", array_merge([$f], $params))->fetchColumn();
     }
-    $leadsOk = (int)$pdo->query("SELECT COUNT(*) FROM lead_log WHERE status='ok' AND created_at >= UTC_TIMESTAMP() - INTERVAL $days DAY")->fetchColumn();
+    $leadsOk = (int)$pdo->query("SELECT COUNT(*) FROM lead_log WHERE status='ok' AND created_at >= UTC_TIMESTAMP() - INTERVAL $days DAY$leadVer")->fetchColumn();
 
     $scroll = [];
     foreach ([25, 50, 75, 90, 100] as $m) {

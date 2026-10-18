@@ -41,6 +41,8 @@ function lp_db(array $cfg): ?PDO
             referer     VARCHAR(255) NULL,
             attempts    TEXT NULL COMMENT 'JSON: попытки отправки, HTTP-коды, ответы',
             duration_ms INT UNSIGNED NULL,
+            landing_version VARCHAR(20) NULL COMMENT 'вариант лендинга',
+            KEY idx_landing_version (landing_version),
             KEY idx_created (created_at),
             KEY idx_status (status),
             KEY idx_phone (phone)
@@ -60,10 +62,24 @@ function lp_db(array $cfg): ?PDO
             device     VARCHAR(8) NOT NULL DEFAULT '',
             src        VARCHAR(100) NOT NULL DEFAULT '' COMMENT 'utm_source',
             cmp        VARCHAR(100) NOT NULL DEFAULT '' COMMENT 'utm_campaign',
+            lv         VARCHAR(20) NOT NULL DEFAULT '' COMMENT 'вариант лендинга (landing_version); пусто — A до разделения',
             KEY idx_created (created_at),
             KEY idx_pv (pv),
-            KEY idx_type_el (type, el)
+            KEY idx_type_el (type, el),
+            KEY idx_lv (lv)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
+        // База может быть общей с вариантом A (созданной до разделения A/B): добавляем столбцы версии
+        $addCol = function (string $table, string $col, string $ddl) use ($pdo): void {
+            try {
+                if (!$pdo->query("SHOW COLUMNS FROM `$table` LIKE '$col'")->fetch()) {
+                    $pdo->exec("ALTER TABLE `$table` ADD COLUMN $ddl, ADD KEY idx_$col ($col)");
+                }
+            } catch (Throwable $e) {
+                error_log("lp_db: add column $table.$col: " . $e->getMessage());
+            }
+        };
+        $addCol('track_event', 'lv', "lv VARCHAR(20) NOT NULL DEFAULT '' COMMENT 'вариант лендинга'");
+        $addCol('lead_log', 'landing_version', "landing_version VARCHAR(20) NULL COMMENT 'вариант лендинга'");
     } catch (Throwable $e) {
         $GLOBALS['LP_DB_ERROR'] = $e->getMessage();
         error_log('lp_db: ' . $e->getMessage());

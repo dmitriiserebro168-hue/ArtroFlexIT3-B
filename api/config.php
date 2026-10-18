@@ -69,7 +69,7 @@ return (function (): array {
         ],
 
         // ---------- Защита ----------
-        'allowed_origins' => ['https://it3.artro-flex.com', 'https://www.it3.artro-flex.com'],
+        'allowed_origins' => ['https://it3b.artro-flex.com', 'https://www.it3b.artro-flex.com'],
         'require_consent' => true,                       // должно совпадать с form.requireConsent в config.js
 
         // Каталог для служебных файлов

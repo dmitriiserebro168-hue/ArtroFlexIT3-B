@@ -1,0 +1,86 @@
+/* Вариант B: компактный первый экран с формой. Переменные и общие компоненты — из style.css. */
+
+/* Плашка блокеров публикации (служебная, на итальянском её не переводим) */
+.blockers { background: #7c2d12; color: #fff; font-size: 16px; line-height: 1.4; padding: 10px var(--gutter); }
+.blockers strong { color: #fde68a; }
+.blockers ul { margin: 4px 0 0; padding-left: 20px; }
+
+.variant-b .topbar__inner { min-height: 52px; }
+
+/* ---------- 1. Первый экран ---------- */
+.hero-b { padding: 16px 0 40px; background: linear-gradient(180deg, #fff 0, #fff 55%, var(--bg-tint) 100%); }
+.hero-b__grid { display: grid; gap: 20px; }
+.hero-b .eyebrow { margin-bottom: 10px; }
+.hero-b h1 { font-size: 26px; line-height: 1.2; margin-bottom: 14px; }
+
+.hero-b__product { display: grid; grid-template-columns: 132px 1fr; gap: 14px; align-items: center; margin-bottom: 14px; }
+.hero-b__img img { width: 100%; height: auto; }
+.hero-b__lead { font-size: 18px; line-height: 1.45; margin: 0 0 6px; }
+.hero-b__pack { font-size: 17px; font-weight: 700; color: var(--trust); margin: 0; }
+
+.price-b { border: 2px solid var(--line); border-radius: var(--radius); padding: 12px 14px; background: #fff; }
+.price-b p { margin: 0; }
+.price-b__main { font-size: 18px; line-height: 1.4; }
+.price-b__main strong { font-size: 24px; color: var(--price); white-space: nowrap; }
+.price-b__lines { font-size: 17px; color: var(--text-soft); margin-top: 4px !important; }
+
+/* Форма в первом экране */
+.hero-b__form:focus { outline: none; }
+.hero-b .form-card { padding: 22px 18px; border-top: 6px solid var(--cta); }
+.hero-b .form-card__title { font-size: 24px; text-align: left; margin-bottom: 8px; }
+.hero-b .form-card__title::after { display: none !important; }
+.hero-b .form-card__lead { text-align: left; font-size: 18px; margin-bottom: 18px; }
+.hero-b .field { margin-bottom: 16px; }
+.hero-b .btn-note { text-align: center; }
+.hero-b .form-privacy { font-size: 16px; }
+
+/* ---------- 2–5. Информационные блоки ---------- */
+.variant-b .section { padding: 44px 0; }
+.variant-b .section h2 { text-align: left; }
+.variant-b .section h2::after { display: none !important; }
+.variant-b .table th { background: var(--trust); color: #fff; }
+.table-b td:last-child, .table-b th:last-child { text-align: right; }
+.table-b th, .table-b td { padding: 12px 12px; }
+@media (max-width: 480px) { .table-b { font-size: 17px; } }
+.notice--plain { background: #fff; border-left-color: var(--trust); margin-top: 20px; }
+.notice--plain ul { font-size: 18px; }
+
+.how-b { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 12px; }
+.how-b li { display: flex; gap: 14px; align-items: flex-start; background: #fff; border-radius: var(--radius); padding: 16px; }
+.how-b .steps__n { margin-top: -2px; }
+
+.terms-b { margin: 0; display: grid; border-top: 1px solid var(--line); }
+.terms-b > div { display: grid; gap: 2px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.terms-b dt { font-size: 16px; font-weight: 700; color: var(--trust); text-transform: uppercase; letter-spacing: .03em; }
+.terms-b dd { margin: 0; }
+
+.variant-b .faq { grid-template-columns: 1fr; }
+
+.final-b { background: var(--bg-tint); }
+.variant-b .final-b h2 { text-align: center; }
+.final-b__btn { width: 100%; max-width: 440px; }
+
+.footer__contacts { margin: 0; line-height: 1.6; }
+.variant-b .footer { padding-bottom: 110px; }
+
+/* ---------- Планшет и desktop ---------- */
+@media (min-width: 768px) {
+  .hero-b h1 { font-size: 34px; }
+  .hero-b__product { grid-template-columns: 200px 1fr; gap: 20px; }
+  .terms-b > div { grid-template-columns: 220px 1fr; gap: 16px; align-items: baseline; }
+  .variant-b .section { padding: 64px 0; }
+}
+@media (min-width: 900px) {
+  .hero-b { padding: 40px 0 56px; }
+  .hero-b__grid { grid-template-columns: 1fr 460px; gap: 48px; align-items: start; }
+  .hero-b h1 { font-size: 38px; }
+  .hero-b__product { grid-template-columns: 260px 1fr; }
+  /* Общий style.css делает .form-card двухколоночной — в B форма узкая, одна колонка */
+  .hero-b .form-card { display: block; padding: 28px 28px; }
+  .variant-b .narrow-wrap { max-width: 820px; }
+}
+@media (max-width: 359px) {
+  .hero-b h1 { font-size: 24px; }
+  .hero-b__product { grid-template-columns: 104px 1fr; }
+  .hero-b__lead { font-size: 17px; }
+}

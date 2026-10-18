@@ -1,95 +1,78 @@
 /*
- * НАСТРОЙКИ ЛЕНДИНГА — единственное место для правки цены, скидки, названий и утверждений.
- * Подробная инструкция: README.md, раздел «Как менять цену, скидку, таймер, остаток и тексты».
+ * НАСТРОЙКИ ЛЕНДИНГА — ВАРИАНТ B (репозиторий ArtroFlexIT3-B).
+ * Единственное место для правки цены, условий, названий и статуса проверки данных.
  *
- * Таймер и остаток упаковок в рабочем режиме берутся с сервера (api/config.php → api/offer.php).
- * Значения ниже — только запасной вариант, если сервер не ответил, и для демо-режима.
+ * Вариант B по ТЗ «ArtroFlex Active — версия B» v1.0 (18.10.2026): без скидки, таймера,
+ * остатка, отзывов и лечебных обещаний. Подробности — README.md, раздел «Вариант B».
  */
 window.LANDING_CONFIG = {
-  // "draft"      — черновик: показываются ВСЕ утверждения из концепции с жёлтой меткой «da verificare»
-  //                и видны плейсхолдеры [В КВАДРАТНЫХ СКОБКАХ].
-  // "production" — показываются только утверждения, у которых в approvedClaims стоит true.
+  // "draft"      — жёлтая подсветка плейсхолдеров [В КВАДРАТНЫХ СКОБКАХ] и непроверенных значений.
+  // "production" — без подсветки. Переключать только когда все пункты verified = true.
   mode: "draft",
 
-  landingVersion: "tsl-it-1.0",
-  offerId: "208",
+  // Идентификатор варианта: уходит в журнал заявок (lead_log.landing_version) и в аналитику (track_event.lv).
+  // У варианта A своё значение — "tsl-it-1.0".
+  landingVersion: "artro-it-b-1",
+  offerId: "208",             // тот же оффер, что у A: предложение не меняется
+
+  // Что подтверждено документально. Пока есть хоть один false — на странице красная плашка «BOZZA — НЕ ПУБЛИКОВАТЬ».
+  verified: {
+    label: false,      // состав, количество на суточную дозу, 30 капсул, фото упаковки = упаковка, продаваемая в Италии
+    usage: false,      // «2 капсулы в обед и 1 вечером» и предупреждения — по инструкции производителя
+    price: false,      // 39 € за 1 упаковку — коммерческое подтверждение
+    shipping: false,   // price.shipping и price.extraFees заполнены
+    terms: false,      // способы оплаты, сроки и география доставки, продавец (text.seller*)
+    caller: false,     // роль Geberich (звонит) и Neo Elementum OÜ (получает данные)
+    legal: false,      // privacy.html, termini.html, текст согласия в форме согласованы юристом
+    analytics: false   // cookie-баннер / Pixel и состав событий Meta согласованы
+  },
 
   // Тексты, подставляемые в элементы data-t="..."
   text: {
-    productName: "Artroflex Active",
-    productCategory: "un integratore alimentare in capsule",
+    productName: "ArtroFlex Active",
     partnerName: "Neo Elementum OÜ",       // партнёрская сеть (Webvork), получает заявки
-    callerName: "Geberich",                // от чьего имени звонит оператор
+    callerName: "Geberich",                // от чьего имени звонит оператор — ПОДТВЕРДИТЬ
     sellerName: "[RAGIONE SOCIALE VENDITORE]",
     sellerAddress: "[INDIRIZZO SEDE LEGALE]",
     sellerVat: "[PARTITA IVA]",
     sellerPhone: "[TELEFONO]",
     sellerEmail: "[EMAIL]",
-    manufacturer: "Developed by Geberich",
-    units: "30 capsule",                     // при 3 капсулах в день = 10 дней
-    packs: "1 confezione",                  // количество упаковок в предложении
-    deliveryTime: "1–2 giorni",
+    units: "30 capsule",
+    packs: "1 confezione",
+    paymentMethods: "[METODI DI PAGAMENTO CONFERMATI]",
     deliveryArea: "[ZONE DI CONSEGNA]",
-    refundDays: "[X]",
-    callbackTime: "10 minuti"               // используется только при approvedClaims.call10min
+    deliveryTime: "[TEMPI DI CONSEGNA]"
   },
 
-  // Цены в евро. null — цена не указана (в черновике будет «€ —»).
+  // Цены в евро. null — не подтверждено (на странице «€ —», «Totale» не считается).
+  // Скидку и прежнюю цену 78 € не показывать без надлежащей ценовой истории (ТЗ B, п. 5).
   price: {
-    old: 78,            // цена сравнения (наименьшая за 30 дней до скидки — Codice del Consumo, art. 17-bis)
-    current: 39,        // актуальная цена
-    discountPercent: 50,
+    old: null,
+    current: 39,
+    discountPercent: null,
     shipping: null,     // 0 = доставка бесплатна
     extraFees: null,    // иные обязательные платежи (напр. контрассегно); null — нет
-    afterExpiry: null   // цена после окончания акции; null — цена скрывается, условия сообщает оператор
+    afterExpiry: null
   },
 
-  offer: {
-    // Запасная дата окончания (Europe/Rome). Рабочее значение — в api/config.php.
-    fallbackEndsAt: "2026-10-31T23:59:59+01:00",
-    fallbackStock: 17,
-    // Персональная скидка: действует N часов с ПЕРВОГО захода посетителя (запоминается в браузере,
-    // при повторном заходе таймер продолжает отсчёт, а не начинается заново). 0 — общая дата из api/config.php.
-    personalHours: 5,
-    // Что делать после окончания акции: "end" — скрыть скидку, таймер и остаток, показать сообщение.
-    onExpire: "end"
-  },
+  offer: { personalHours: 0 },
 
-  // Утверждения из концепции (раздел 14 ТЗ). В режиме production показываются только true.
-  // Ставить true только после заполнения карточки в docs/claims.md.
-  approvedClaims: {
-    heroTestimonial: true,   // H1 «Cammino liberamente, senza dolore alle ginocchia, già dopo due settimane»
-    chondroitin: true,       // «Condroitina → la cartilagine si rigenera → movimenti senza scricchiolii»
-    problemWorsens: true,    // «la situazione può peggiorare»
-    stats: true,             // 12 000 clienti / 15 anni / 98% riordini
-    discount: true,          // скидка 50%: 78 € → 39 €
-    stock: true,             // «Restano 17 confezioni»
-    timer: true,             // таймер окончания акции
-    call10min: true,         // «Ti richiamiamo entro 10 minuti»
-    moneyBack: true,         // «Se non ti soddisfa, ti rimborsiamo entro X giorni»
-    cod: true,               // «Pagamento alla consegna»
-    noPrepay: true,          // «Nessun pagamento anticipato»
-    beforeAfter: true,       // модуль «до → после» с реальными материалами
-    vitaminC: true,          // «La vitamina C contribuisce alla normale formazione del collagene…» (Reg. UE 432/2012, нужно ≥12 мг/сут)
-    vsDrugs: false,           // «Farmaci antidolorifici… non agiscono sulla causa» (креатив «Cosa aiuta»)
-    botanicals: true         // «funzionalità articolare» для куркумы, босвеллии, имбиря, когтя дьявола (перечень Минздрава)
-  },
+  // В B нет утверждений из концепции: всё недостоверное удалено из HTML, а не скрыто переключателями.
+  approvedClaims: {},
 
   form: {
     endpoint: "api/lead.php",
-    offerEndpoint: "api/offer.php",
-    reviewsEndpoint: "api/reviews.php?scope=public",
     timeoutMs: 40000,   // сервер пробует 2 адреса Webvork дважды
-    // Обязательный чекбокс согласия на звонок и передачу данных партнёру.
-    // Отключать только если юрист определил иное правовое основание.
+    // Обязательная галочка «прошу перезвонить» (не отмечена заранее).
+    // Отключать только если юрист определил иное правовое основание (и тогда же — require_consent в api/config.php).
     requireConsent: true,
-    privacyVersion: "privacy-it-1.0"
+    privacyVersion: "privacy-it-b-1"
   },
 
   analytics: {
     metaPixelId: "973449535833462", // пусто — пиксель не загружается
-    // Пиксель грузится только после согласия в cookie-баннере.
-    requireCookieConsent: false   // решение заказчика: пиксель без cookie-баннера (риск по GDPR — на заказчике)
+    // true: скрипт Meta загружается только после «Accetta» в cookie-баннере (ТЗ B, п. 13).
+    requireCookieConsent: true
   },
 
   // Демо-режим: заявки не отправляются, ответ сервера имитируется. Включается автоматически
