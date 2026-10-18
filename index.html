@@ -50,7 +50,7 @@
 
       <div class="price-b" data-track="price-hero">
         <p class="price-b__main">Prezzo: <strong data-price="current">39,00 €</strong> per <span data-t="packs">1 confezione</span> da <span data-t="units">30 capsule</span></p>
-        <p class="price-b__lines">Spedizione: <span data-price="shipping">€ —</span> · Totale: <strong data-price="total">€ —</strong></p>
+        <p class="price-b__lines">Spedizione concordata con l'operatore. Consegna in 3–5 giorni, paghi alla ricezione.</p>
       </div>
     </div>
 
@@ -99,7 +99,7 @@
           <p class="btn-note">La richiesta non è un acquisto e non comporta obblighi di pagamento.</p>
 
           <p class="form-privacy">
-            Ti chiamerà un operatore di <span data-t="callerName">Geberich</span>; i dati inseriti sono trasmessi a <span data-t="partnerName">Neo Elementum OÜ</span> per gestire la richiesta.
+            Ti chiamerà un operatore di <span data-t="callerName">Geberich</span>, che tratta i dati inseriti per gestire la tua richiesta.
             <a href="privacy.html" target="_blank" rel="noopener">Informativa privacy</a>
           </p>
         </form>
@@ -183,20 +183,17 @@
 </section>
 
 <!-- ============ 5. ЦЕНА, ДОСТАВКА, ОПЛАТА ============ -->
-<!-- Все значения — из config.js (price, text). До подтверждения (verified.price/shipping/terms) не публиковать. -->
+<!-- Условия подтверждены заказчиком 18.10.2026: доставку согласует оператор, 3–5 дней, оплата после получения. -->
 <section class="section" id="prezzo" aria-labelledby="price-title" data-track="sec-price">
   <div class="wrap narrow-wrap">
     <h2 id="price-title">Prezzo, consegna e pagamento</h2>
     <dl class="terms-b">
       <div><dt>Offerta</dt><dd><span data-t="packs">1 confezione</span> di ArtroFlex Active da <span data-t="units">30 capsule</span></dd></div>
       <div><dt>Prezzo</dt><dd data-price="current">39,00 €</dd></div>
-      <div><dt>Spedizione</dt><dd data-price="shipping">€ —</dd></div>
-      <div data-extra-fees hidden><dt>Altri costi obbligatori</dt><dd data-price="extraFees">€ —</dd></div>
-      <div><dt>Totale</dt><dd><strong data-price="total">€ —</strong></dd></div>
-      <div><dt>Pagamento</dt><dd data-t="paymentMethods" class="ph">[metodi di pagamento confermati]</dd></div>
-      <div><dt>Consegna</dt><dd><span data-t="deliveryArea" class="ph">[zone di consegna]</span>, <span data-t="deliveryTime" class="ph">[tempi di consegna]</span></dd></div>
+      <div><dt>Spedizione</dt><dd>Il costo viene concordato con l'operatore e comunicato prima della conferma dell'ordine.</dd></div>
+      <div><dt>Consegna</dt><dd>In Italia, in 3–5 giorni dalla conferma dell'ordine.</dd></div>
+      <div><dt>Pagamento</dt><dd>Dopo la ricezione dell'ordine: con carta, in contanti o con bonifico bancario (IBAN).</dd></div>
       <div><dt>Recesso e resi</dt><dd>Restano validi i diritti previsti dal Codice del Consumo, incluso il diritto di recesso entro 14 giorni. <a href="termini.html#resi">Condizioni</a></dd></div>
-      <div><dt>Venditore</dt><dd><span data-t="sellerName" class="ph">[ragione sociale]</span>, <span data-t="sellerAddress" class="ph">[indirizzo]</span> — <a href="#contatti">contatti</a></dd></div>
     </dl>
   </div>
 </section>
@@ -212,7 +209,7 @@
       </details>
       <details data-track="faq-2">
         <summary>Chi mi contatterà?</summary>
-        <div class="faq__a"><p>Un operatore incaricato della gestione della richiesta. Il soggetto che effettua la chiamata è indicato nell'<a href="privacy.html">informativa privacy</a>.</p></div>
+        <div class="faq__a"><p>Un operatore di <span data-t="callerName">Geberich</span>, incaricato della gestione della richiesta. Maggiori dettagli nell'<a href="privacy.html">informativa privacy</a>.</p></div>
       </details>
       <details data-track="faq-3">
         <summary>Quanto dura una confezione?</summary>
@@ -246,15 +243,6 @@
 <footer class="footer" id="contatti">
   <div class="wrap">
     <div class="footer__grid">
-      <div>
-        <h2 class="footer__h">Venditore</h2>
-        <p class="footer__contacts">
-          <span data-t="sellerName" class="ph">[ragione sociale]</span><br>
-          <span data-t="sellerAddress" class="ph">[indirizzo]</span><br>
-          P. IVA <span data-t="sellerVat" class="ph">[partita IVA]</span><br>
-          Tel. <span data-t="sellerPhone" class="ph">[telefono]</span> · <span data-t="sellerEmail" class="ph">[email]</span>
-        </p>
-      </div>
       <div>
         <h2 class="footer__h">Informazioni</h2>
         <ul class="footer__links">

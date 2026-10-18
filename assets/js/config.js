@@ -8,7 +8,7 @@
 window.LANDING_CONFIG = {
   // "draft"      — жёлтая подсветка плейсхолдеров [В КВАДРАТНЫХ СКОБКАХ] и непроверенных значений.
   // "production" — без подсветки. Переключать только когда все пункты verified = true.
-  mode: "draft",
+  mode: "production",
 
   // Идентификатор варианта: уходит в журнал заявок (lead_log.landing_version) и в аналитику (track_event.lv).
   // У варианта A своё значение — "tsl-it-1.0".
@@ -20,30 +20,21 @@ window.LANDING_CONFIG = {
     label: true,       // состав и упаковка сверены с этикеткой (18.10.2026)
     usage: true,       // применение и предупреждения — по инструкции производителя (получено 18.10.2026)
     price: true,       // 39 € за 1 упаковку — подтверждено (18.10.2026)
-    shipping: false,   // price.shipping и price.extraFees заполнены
-    terms: false,      // способы оплаты, сроки и география доставки, продавец (text.seller*)
-    caller: true,      // звонит Geberich — подтверждено (18.10.2026); данные получает Neo Elementum OÜ
-    legal: false       // privacy.html, termini.html, текст согласия в форме согласованы юристом
+    shipping: true,    // стоимость доставки согласует оператор до подтверждения заказа (решение заказчика 18.10.2026)
+    terms: true,       // доставка 3–5 дней, оплата после получения: карта, наличные, IBAN; продавец не указывается (решение заказчика)
+    caller: true,      // звонит Geberich, Geberich — оператор данных в privacy.html (решение заказчика 18.10.2026)
+    legal: true        // termini.html и privacy.html написаны по вводным заказчика 18.10.2026 (юристом не проверялись)
   },
 
   // Тексты, подставляемые в элементы data-t="..."
   text: {
     productName: "ArtroFlex Active",
-    partnerName: "Neo Elementum OÜ",       // партнёрская сеть (Webvork), получает заявки
     callerName: "Geberich",                // звонит оператор Geberich (подтверждено)
-    sellerName: "[RAGIONE SOCIALE VENDITORE]",
-    sellerAddress: "[INDIRIZZO SEDE LEGALE]",
-    sellerVat: "[PARTITA IVA]",
-    sellerPhone: "[TELEFONO]",
-    sellerEmail: "[EMAIL]",
     units: "30 capsule",
-    packs: "1 confezione",
-    paymentMethods: "[METODI DI PAGAMENTO CONFERMATI]",
-    deliveryArea: "[ZONE DI CONSEGNA]",
-    deliveryTime: "[TEMPI DI CONSEGNA]"
+    packs: "1 confezione"
   },
 
-  // Цены в евро. null — не подтверждено (на странице «€ —», «Totale» не считается).
+  // Цены в евро. Доставку согласует оператор, поэтому shipping = null и «Totale» на странице не выводится.
   // Скидку и прежнюю цену 78 € не показывать без надлежащей ценовой истории (ТЗ B, п. 5).
   price: {
     old: null,

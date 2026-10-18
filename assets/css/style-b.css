@@ -8,8 +8,8 @@
 .variant-b .topbar__inner { min-height: 52px; }
 
 /* ---------- 1. Первый экран ---------- */
-.hero-b { padding: 16px 0 40px; background: linear-gradient(180deg, #fff 0, #fff 55%, var(--bg-tint) 100%); }
-.hero-b__grid { display: grid; gap: 20px; }
+.hero-b { padding: 12px 0 40px; background: linear-gradient(180deg, #fff 0, #fff 55%, var(--bg-tint) 100%); }
+.hero-b__grid { display: grid; gap: 14px; }
 .hero-b .eyebrow { margin-bottom: 10px; }
 .hero-b h1 { font-size: 26px; line-height: 1.2; margin-bottom: 14px; }
 
@@ -26,10 +26,10 @@
 
 /* Форма в первом экране */
 .hero-b__form:focus { outline: none; }
-.hero-b .form-card { padding: 22px 18px; border-top: 6px solid var(--cta); }
+.hero-b .form-card { padding: 18px 18px 22px; border-top: 6px solid var(--cta); }
 .hero-b .form-card__title { font-size: 24px; text-align: left; margin-bottom: 8px; }
 .hero-b .form-card__title::after { display: none !important; }
-.hero-b .form-card__lead { text-align: left; font-size: 18px; margin-bottom: 18px; }
+.hero-b .form-card__lead { text-align: left; font-size: 18px; margin-bottom: 12px; }
 .hero-b .field { margin-bottom: 16px; }
 .hero-b .btn-note { text-align: center; }
 .hero-b .form-privacy { font-size: 16px; }

@@ -88,7 +88,7 @@
     price: 'цена 39 € за 1 упаковку подтверждена коммерчески',
     shipping: 'стоимость доставки и обязательные доплаты (price.shipping, price.extraFees)',
     terms: 'оплата, сроки и география доставки, продавец и его контакты',
-    caller: 'кто звонит и кто получает данные (Geberich / Neo Elementum OÜ)',
+    caller: 'кто звонит и кто оператор данных (Geberich)',
     legal: 'privacy.html и termini.html завершены и согласованы'
   };
   function showBlockers() {
