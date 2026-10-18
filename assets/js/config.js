@@ -53,7 +53,7 @@ window.LANDING_CONFIG = {
   form: {
     endpoint: "api/lead.php",
     timeoutMs: 40000,   // сервер пробует 2 адреса Webvork дважды
-    // Обязательная галочка «прошу перезвонить» (не отмечена заранее).
+    // Обязательная галочка «прошу перезвонить» (отмечена по умолчанию — решение заказчика).
     // Отключать только если юрист определил иное правовое основание (и тогда же — require_consent в api/config.php).
     requireConsent: true,
     privacyVersion: "privacy-it-b-1"
