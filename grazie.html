@@ -33,15 +33,6 @@
   </div>
 </main>
 
-<div class="cookie" id="cookie" role="dialog" aria-labelledby="cookie-title" hidden>
-  <p id="cookie-title"><strong>Cookie</strong></p>
-  <p>Usiamo cookie tecnici e, solo con il tuo consenso, cookie di misurazione di Meta. <a href="privacy.html#cookie">Cookie Policy</a></p>
-  <div class="cookie__btns">
-    <button type="button" class="btn btn--ghost" data-cookie="deny">Rifiuta</button>
-    <button type="button" class="btn btn--ghost" data-cookie="accept">Accetta</button>
-  </div>
-</div>
-
 <script>
 /*
  * Страница благодарности. Сюда попадают ТОЛЬКО после того, как сервер подтвердил приём заявки Webvork.
@@ -75,7 +66,7 @@
     window.fbq('track', 'Lead', {}, { eventID: leadId });
     try { if (ss) ss.setItem(key, '1'); } catch (e) {}
   }
-  // Скрипт Meta загружается только после согласия (при requireCookieConsent)
+  // Пиксель Meta: PageView и Lead
   function loadPixel(id) {
     /* eslint-disable */
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -91,21 +82,7 @@
 
   var a = cfg.analytics || {};
   if (!a.metaPixelId) return;
-  var choice = null;
-  try { choice = localStorage.getItem('cookie_consent'); } catch (e) {}
-  var granted = !a.requireCookieConsent || choice === 'accept';
-  if (granted) loadPixel(a.metaPixelId);
-  if (granted || choice === 'deny') return;
-  var box = document.getElementById('cookie');
-  box.hidden = false;
-  box.querySelectorAll('[data-cookie]').forEach(function (b) {
-    b.addEventListener('click', function () {
-      var v = b.getAttribute('data-cookie');
-      try { localStorage.setItem('cookie_consent', v); } catch (e) {}
-      box.hidden = true;
-      if (v === 'accept') loadPixel(a.metaPixelId);
-    });
-  });
+  loadPixel(a.metaPixelId); // без cookie-баннера, как в варианте A (решение заказчика)
 })();
 </script>
 </body>

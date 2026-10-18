@@ -23,8 +23,7 @@ window.LANDING_CONFIG = {
     shipping: false,   // price.shipping и price.extraFees заполнены
     terms: false,      // способы оплаты, сроки и география доставки, продавец (text.seller*)
     caller: false,     // роль Geberich (звонит) и Neo Elementum OÜ (получает данные)
-    legal: false,      // privacy.html, termini.html, текст согласия в форме согласованы юристом
-    analytics: false   // cookie-баннер / Pixel и состав событий Meta согласованы
+    legal: false       // privacy.html, termini.html, текст согласия в форме согласованы юристом
   },
 
   // Тексты, подставляемые в элементы data-t="..."
@@ -70,9 +69,8 @@ window.LANDING_CONFIG = {
   },
 
   analytics: {
-    metaPixelId: "973449535833462", // пусто — пиксель не загружается
-    // true: скрипт Meta загружается только после «Accetta» в cookie-баннере (ТЗ B, п. 13).
-    requireCookieConsent: true
+    metaPixelId: "973449535833462"  // пусто — пиксель не загружается
+    // Без cookie-баннера: пиксель грузится сразу, как в варианте A (решение заказчика, риск по GDPR — на заказчике)
   },
 
   // Демо-режим: заявки не отправляются, ответ сервера имитируется. Включается автоматически

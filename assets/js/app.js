@@ -22,7 +22,7 @@
     window.dataLayer.push(data);
   }
 
-  // Пиксель Meta. При requireCookieConsent скрипт Meta не загружается вовсе, пока посетитель не нажал «Accetta».
+  // Пиксель Meta: только PageView здесь, Lead — на grazie.html
   function loadPixel(id) {
     /* eslint-disable */
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -35,23 +35,10 @@
     window.fbq('track', 'PageView');
   }
 
-  function initCookies() {
+  // Без cookie-баннера, как в варианте A (решение заказчика)
+  function initPixel() {
     var a = cfg.analytics || {};
-    if (!a.metaPixelId || isDemo) return;
-    var choice = storeGet('localStorage', 'cookie_consent');
-    var granted = !a.requireCookieConsent || choice === 'accept';
-    if (granted) loadPixel(a.metaPixelId);
-    if (granted || choice === 'deny') return;
-    var box = $('#cookie');
-    box.hidden = false;
-    $$('[data-cookie]', box).forEach(function (b) {
-      b.addEventListener('click', function () {
-        var v = b.getAttribute('data-cookie');
-        storeSet('localStorage', 'cookie_consent', v);
-        box.hidden = true;
-        if (v === 'accept') loadPixel(a.metaPixelId);
-      });
-    });
+    if (a.metaPixelId && !isDemo) loadPixel(a.metaPixelId);
   }
 
   /* ---------- UTM и рекламные параметры ---------- */
@@ -102,8 +89,7 @@
     shipping: 'стоимость доставки и обязательные доплаты (price.shipping, price.extraFees)',
     terms: 'оплата, сроки и география доставки, продавец и его контакты',
     caller: 'кто звонит и кто получает данные (Geberich / Neo Elementum OÜ)',
-    legal: 'privacy.html и termini.html завершены и согласованы',
-    analytics: 'cookie/Pixel и события Meta согласованы'
+    legal: 'privacy.html и termini.html завершены и согласованы'
   };
   function showBlockers() {
     var box = $('#blockers');
@@ -644,6 +630,6 @@
   initFaq();
   initCta();
   initForm(captureParams());
-  initCookies();
+  initPixel();
   track('page_view', { landing_version: cfg.landingVersion });
 })();
