@@ -2,14 +2,14 @@
 /*
  * Настройки сервера. Файл хранится в git, секретов в нём нет.
  *
- * Секреты (токен Webvork, пароль редактора, соль) — в файле artroflex3-config.php
- * УРОВНЕМ ВЫШЕ папки сайта: /home/artrofle/artroflex3-config.php (как artroflex2-config.php у it2).
+ * Секреты (токен Webvork, пароль редактора, соль) — в файле artroflex3b-config.php
+ * УРОВНЕМ ВЫШЕ папки сайта: /home/artrofle/artroflex3b-config.php (у варианта A — artroflex3-config.php).
  * Он загружается один раз вручную (cPanel → File Manager), в git и в браузер не попадает.
  * Образец — config.example.php в корне репозитория. Для локальных тестов можно положить api/secrets.php.
  */
 return (function (): array {
     $secret = [];
-    foreach ([dirname(__DIR__, 2) . '/artroflex3-config.php', __DIR__ . '/secrets.php'] as $f) {
+    foreach ([dirname(__DIR__, 2) . '/artroflex3b-config.php', __DIR__ . '/secrets.php'] as $f) {
         if (!is_file($f)) continue;
         // Ошибка в файле секретов не должна ронять весь сайт: запоминаем её для ?health=config
         try {

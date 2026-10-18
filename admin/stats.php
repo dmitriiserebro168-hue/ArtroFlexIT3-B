@@ -2,7 +2,7 @@
 /**
  * Дашборд поведения посетителей и журнала заявок (по образцу it2/stats.php).
  * Данные — track_event (поведение) и lead_log (заявки).
- * Пароль — 'stats_password' в /home/artrofle/artroflex3-config.php (если не задан — 'admin_password').
+ * Пароль — 'stats_password' в /home/artrofle/artroflex3b-config.php (если не задан — 'admin_password').
  */
 declare(strict_types=1);
 
@@ -149,7 +149,7 @@ $LEAD_STATUS = [
 <?php if ($password === ''): ?>
   <div class="wrap login card">
     <h1>Дашборд не настроен</h1>
-    <p>Добавьте в <code>/home/artrofle/artroflex3-config.php</code> строку<br><code>'stats_password' => 'ваш-пароль',</code></p>
+    <p>Добавьте в <code>/home/artrofle/artroflex3b-config.php</code> строку<br><code>'stats_password' => 'ваш-пароль',</code></p>
   </div>
 </body></html>
 <?php exit; endif; ?>
@@ -165,7 +165,7 @@ $LEAD_STATUS = [
 <?php
 $pdo = lp_db($cfg);
 if (!$pdo) {
-    echo '<div class="wrap card"><h1>Нет подключения к базе</h1><p>Проверьте блок <code>db</code> в <code>/home/artrofle/artroflex3-config.php</code>. Диагностика: <code>/api/lead.php?health=config</code></p>'
+    echo '<div class="wrap card"><h1>Нет подключения к базе</h1><p>Проверьте блок <code>db</code> в <code>/home/artrofle/artroflex3b-config.php</code>. Диагностика: <code>/api/lead.php?health=config</code></p>'
        . (!empty($GLOBALS['LP_DB_ERROR']) ? '<p class="err">' . h(preg_replace('/\(using password.*$/', '', (string)$GLOBALS['LP_DB_ERROR'])) . '</p>' : '')
        . '</div></body></html>';
     exit;

@@ -15,5 +15,6 @@ assets/img/reviews/*
 
 # Секреты уровнем выше папки сайта (загружается вручную)
 artroflex3-config.php
+artroflex3b-config.php
 assets/img/experts/*
 !assets/img/experts/.htaccess

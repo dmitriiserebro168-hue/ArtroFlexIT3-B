@@ -1,10 +1,10 @@
 <?php
-// Образец. Скопируйте в artroflex3-config.php, заполните и загрузите
-// на уровень выше папки сайта: /home/artrofle/artroflex3-config.php
+// Образец для ВАРИАНТА B (it3b). Скопируйте в artroflex3b-config.php, заполните и загрузите
+// на уровень выше папки сайта: /home/artrofle/artroflex3b-config.php
 // (cPanel → File Manager). В Git и в браузер этот файл не попадает.
 return array(
     'token'          => 'ВАШ_ТОКЕН_WEBVORK',
-    'offer_id'       => '208',                 // оффер Webvork; 208 — как у it2, уточните для it3
+    'offer_id'       => '208',                 // оффер Webvork; 208 — как у A
     'admin_password' => 'ПАРОЛЬ_РЕДАКТОРА_ОТЗЫВОВ',
     'experts_password' => 'ПАРОЛЬ_РЕДАКТОРА_СПЕЦИАЛИСТОВ',   // /admin/experts.html; пусто — пароль редактора отзывов
 
@@ -12,8 +12,8 @@ return array(
     // создать в cPanel → MySQL Database Wizard и дать пользователю ALL PRIVILEGES на базу.
     'db' => array(
         'host' => 'localhost',
-        'name' => 'artrofle_artroflex3',
-        'user' => 'artrofle_artroflex3',
+        'name' => 'artrofle_artroflex3b',   // отдельная база варианта B
+        'user' => 'artrofle_artroflex3b',
         'pass' => 'ПАРОЛЬ_ПОЛЬЗОВАТЕЛЯ_БАЗЫ',
     ),
 
@@ -25,6 +25,6 @@ return array(
 
     // Письма об ошибках отправки лидов (необязательно)
     'alert_email'    => 'you@example.com',
-    // Пароль дашборда https://it3.artro-flex.com/admin/stats.php (пусто — пароль редактора отзывов)
+    // Пароль дашборда https://it3b.artro-flex.com/admin/stats.php (пусто — пароль редактора отзывов)
     'stats_password' => 'ПРИДУМАЙТЕ_ПАРОЛЬ',
 );

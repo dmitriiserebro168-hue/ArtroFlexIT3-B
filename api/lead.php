@@ -144,7 +144,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'GET' && ($_GET['health'] ?? '') === 
     }
     out(200, [
         'ok'                => true,
-        'secrets_file'      => is_file(dirname(__DIR__, 2) . '/artroflex3-config.php'),
+        'secrets_file'      => is_file(dirname(__DIR__, 2) . '/artroflex3b-config.php'),
         'secrets_error'     => $GLOBALS['LP_SECRETS_ERROR'] ?? null,
         'token_set'         => (string)($cfg['partner']['static']['token'] ?? '') !== '',
         'offer_id'          => (string)($cfg['partner']['static']['offer_id'] ?? ''),

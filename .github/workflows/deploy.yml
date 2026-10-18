@@ -11,7 +11,7 @@
 # Переменная (вкладка Variables, необязательно):
 #   FTP_SERVER_DIR — папка сайта B относительно корня FTP-аккаунта (по умолчанию ./).
 #
-# Токен Webvork и пароли — НЕ в GitHub, а в artroflex3-config.php уровнем выше папки сайта
+# Токен Webvork и пароли — НЕ в GitHub, а в artroflex3b-config.php уровнем выше папки сайта
 # (api/config.php ищет его в dirname(api, 2)). Образец — config.example.php.
 
 name: Deploy
@@ -72,6 +72,7 @@ jobs:
             README.md
             config.example.php
             artroflex3-config.php
+            artroflex3b-config.php
             api/secrets.php
             _data/reviews.json
             _data/logs/**

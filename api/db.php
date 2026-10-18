@@ -1,7 +1,7 @@
 <?php
 /*
  * Подключение к MySQL для журнала заявок (lead_log) и аналитики (track_event) — как в it2.
- * Доступ к базе — блок 'db' в /home/artrofle/artroflex3-config.php.
+ * Доступ к базе — блок 'db' в /home/artrofle/artroflex3b-config.php.
  * База необязательна: если она не настроена, заявки всё равно уходят в Webvork.
  */
 declare(strict_types=1);
