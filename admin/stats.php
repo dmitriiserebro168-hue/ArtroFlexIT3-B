@@ -184,11 +184,11 @@ if ($src !== '') { $where .= ' AND src = ?'; $params[] = $src; }
 if ($dev !== '') { $where .= ' AND device = ?'; $params[] = $dev; }
 
 // Вариант лендинга: B пишет landing_version = artro-it-b-1, всё остальное (пусто, tsl-it-1.0) — A
-const B_VERSION = 'artro-it-b-1';
+const B_VERSION = 'artro-it-b-%'; // все версии B: b-1, b-2…
 $ver = in_array($_GET['v'] ?? '', ['a', 'b'], true) ? $_GET['v'] : '';
 $leadVer = '';
-if ($ver === 'b') { $where .= " AND lv = '" . B_VERSION . "'"; $leadVer = " AND landing_version = '" . B_VERSION . "'"; }
-if ($ver === 'a') { $where .= " AND lv <> '" . B_VERSION . "'"; $leadVer = " AND (landing_version IS NULL OR landing_version <> '" . B_VERSION . "')"; }
+if ($ver === 'b') { $where .= " AND lv LIKE '" . B_VERSION . "'"; $leadVer = " AND landing_version LIKE '" . B_VERSION . "'"; }
+if ($ver === 'a') { $where .= " AND lv NOT LIKE '" . B_VERSION . "'"; $leadVer = " AND (landing_version IS NULL OR landing_version NOT LIKE '" . B_VERSION . "')"; }
 
 function q(PDO $pdo, string $sql, array $params) { $st = $pdo->prepare($sql); $st->execute($params); return $st; }
 function pct($a, $b) { return $b > 0 ? round($a / $b * 100, 1) : 0; }
