@@ -9,14 +9,12 @@
 .variant-b .topbar__inner { min-height: 52px; }
 
 /* ---------- 1. Первый экран: вопрос о проблеме ---------- */
-.hero-b2 { padding: 20px 0 36px; background: linear-gradient(180deg, #fff 0, #fff 60%, var(--bg-tint) 100%); }
-.hero-b2__grid { display: grid; grid-template-columns: 1fr 132px; gap: 4px 12px; align-items: start; }
-.hero-b2__text { display: contents; }
-.hero-b2 h1 { grid-column: 1 / -1; font-size: 30px; line-height: 1.15; margin-bottom: 12px; }
-.hero-b2__lead { grid-column: 1; grid-row: 2; font-size: 18px; line-height: 1.45; margin: 0; }
-.hero-b2__img { grid-column: 2; grid-row: 2; align-self: center; }
-.hero-b2__img img { width: 100%; height: auto; }
-.hero-b2__offer, .hero-b2__cta, .hero-b2 .btn-note { grid-column: 1 / -1; }
+.hero-b2 { padding: 0 0 32px; background: linear-gradient(180deg, #fff 0, #fff 60%, var(--bg-tint) 100%); }
+.hero-b2__grid { display: grid; gap: 16px; }
+/* Креатив на всю ширину экрана телефона: заголовок уже на картинке */
+.hero-b2__img { display: block; margin: 0 calc(-1 * var(--gutter)); background: #eef2f7; aspect-ratio: 1122 / 1402; }
+.hero-b2__img img { width: 100%; height: auto; display: block; }
+.hero-b2__lead { font-size: 18px; line-height: 1.45; margin: 0; }
 
 .hero-b2__offer { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; margin: 16px 0 14px; }
 .hero-b2__badge { display: inline-block; background: var(--price); color: #fff; font-weight: 800; font-size: 20px; line-height: 1; padding: 7px 10px; border-radius: 10px; }
@@ -95,19 +93,22 @@
 .variant-b .footer { padding-bottom: 110px; }
 
 /* ---------- Планшет и desktop ---------- */
+@media (min-width: 600px) {
+  .hero-b2 { padding-top: 24px; }
+  .hero-b2__img { margin: 0 auto; width: 100%; max-width: 480px; border-radius: var(--radius); overflow: hidden; }
+  .hero-b2__text { max-width: 560px; margin: 0 auto; }
+}
 @media (min-width: 768px) {
-  .hero-b2 h1 { font-size: 40px; }
   .benefits { grid-template-columns: 1fr 1fr; }
   .offer-b__box { grid-template-columns: 300px 1fr; align-items: center; padding: 32px; }
   .offer-b__img { max-width: 300px; }
   .variant-b .section { padding: 64px 0; }
 }
 @media (min-width: 900px) {
-  .hero-b2 { padding: 48px 0 56px; }
-  .hero-b2__grid { grid-template-columns: 1fr 420px; gap: 48px; align-items: center; }
-  .hero-b2__text { display: block; }
-  .hero-b2__img { grid-column: 2; grid-row: 1; }
-  .hero-b2 h1 { font-size: 46px; }
+  .hero-b2 { padding: 40px 0 56px; }
+  .hero-b2__grid { grid-template-columns: 460px 1fr; gap: 56px; align-items: center; }
+  .hero-b2__img { margin: 0; max-width: none; }
+  .hero-b2__text { max-width: none; margin: 0; }
   .hero-b2__lead { font-size: 20px; }
   .hero-b2__cta { max-width: 440px; }
   .hero-b2 .btn-note { text-align: left; }
@@ -115,7 +116,5 @@
   .form-b .form-card { padding: 32px 36px; }
 }
 @media (max-width: 359px) {
-  .hero-b2 h1 { font-size: 26px; }
-  .hero-b2__grid { grid-template-columns: 1fr 104px; }
   .hero-b2__lead { font-size: 17px; }
 }
