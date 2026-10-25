@@ -11,7 +11,7 @@
 .hero-b2 { padding: 0 0 32px; background: linear-gradient(180deg, #fff 0, #fff 60%, var(--bg-tint) 100%); }
 .hero-b2__grid { display: grid; gap: 16px; }
 /* Креатив на всю ширину экрана телефона: заголовок уже на картинке */
-.hero-b2__img { display: block; margin: 0 calc(-1 * var(--gutter)); background: #eef2f7; aspect-ratio: 1122 / 1402; }
+.hero-b2__img { display: block; margin: 0 calc(-1 * var(--gutter)); background: #eef2f7; aspect-ratio: 1122 / 1280; }
 .hero-b2__img img { width: 100%; height: auto; display: block; }
 .hero-b2__title { font-size: 30px; line-height: 1.15; margin: 18px 0 2px; }
 
