@@ -11,11 +11,11 @@
 .hero-b2 { padding: 0 0 32px; background: #fff; }
 .hero-b2__grid { display: grid; gap: 16px; }
 .hero-b2__title { font-size: 30px; line-height: 1.15; margin: 18px 0 2px; }
-/* Креатив занимает 60 % ширины экрана (прижат к левому краю), текст обтекает его справа и снизу */
-.hero-b2__body { display: flow-root; }
-.hero-b2__img { float: left; width: 60vw; margin: 0 14px 10px calc(-1 * var(--gutter)); background: #eef2f7; aspect-ratio: 1005 / 1280; }
+/* Горизонтальный креатив во всю ширину экрана телефона, текст сразу под ним */
+.hero-b2__body { display: grid; gap: 16px; }
+.hero-b2__img { display: block; margin: 0 calc(-1 * var(--gutter)); background: #eef2f7; aspect-ratio: 1733 / 907; }
 .hero-b2__img img { width: 100%; height: auto; display: block; }
-.hero-b2__note { margin: 0; font-size: 18px; line-height: 1.4; font-weight: 600; hyphens: auto; -webkit-hyphens: auto; overflow-wrap: break-word; }
+.hero-b2__note { margin: 0; font-size: 19px; line-height: 1.5; font-weight: 600; }
 
 .hero-b2__badge { display: inline-block; background: var(--price); color: #fff; font-weight: 800; font-size: 20px; line-height: 1; padding: 7px 10px; border-radius: 10px; }
 
@@ -83,8 +83,8 @@
 @media (min-width: 600px) {
   .hero-b2 { padding-top: 24px; }
   .hero-b2__title { font-size: 38px; text-align: center; }
-  /* Планшет и десктоп: 60 % ширины контента, не больше 600 px, чтобы первый экран не стал гигантским */
-  .hero-b2__img { width: 60%; max-width: 600px; margin: 0 24px 12px 0; border-radius: var(--radius); overflow: hidden; }
+  /* Планшет и десктоп: на всю ширину блока */
+  .hero-b2__img { margin: 0; border-radius: var(--radius); overflow: hidden; }
   .hero-b2__note { font-size: 20px; }
 }
 @media (min-width: 768px) {
