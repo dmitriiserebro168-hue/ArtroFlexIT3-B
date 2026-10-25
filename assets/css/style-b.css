@@ -81,9 +81,6 @@
 .variant-b .section h2::after { display: none !important; }
 .variant-b .faq { grid-template-columns: 1fr; }
 
-.final-b { background: #fff; }
-.variant-b .final-b h2 { text-align: center; }
-.final-b__btn { width: 100%; max-width: 440px; }
 
 .variant-b .footer { padding-bottom: 110px; }
 
