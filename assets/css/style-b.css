@@ -8,20 +8,16 @@
 
 
 /* ---------- 1. Первый экран: вопрос о проблеме ---------- */
-.hero-b2 { padding: 0 0 32px; background: linear-gradient(180deg, #fff 0, #fff 60%, var(--bg-tint) 100%); }
+.hero-b2 { padding: 0 0 32px; background: #fff; }
 .hero-b2__grid { display: grid; gap: 16px; }
-/* Креатив на всю ширину экрана телефона: заголовок уже на картинке */
-.hero-b2__img { display: block; margin: 0 calc(-1 * var(--gutter)); background: #eef2f7; aspect-ratio: 1122 / 1280; }
-.hero-b2__img img { width: 100%; height: auto; display: block; }
 .hero-b2__title { font-size: 30px; line-height: 1.15; margin: 18px 0 2px; }
+/* Креатив занимает 2/3 ширины экрана (прижат к левому краю), текст обтекает его справа и снизу */
+.hero-b2__body { display: flow-root; }
+.hero-b2__img { float: left; width: 66.667vw; margin: 0 14px 10px calc(-1 * var(--gutter)); background: #eef2f7; aspect-ratio: 1122 / 1280; }
+.hero-b2__img img { width: 100%; height: auto; display: block; }
+.hero-b2__note { margin: 0; font-size: 18px; line-height: 1.4; font-weight: 600; hyphens: auto; -webkit-hyphens: auto; overflow-wrap: break-word; }
 
 .hero-b2__badge { display: inline-block; background: var(--price); color: #fff; font-weight: 800; font-size: 20px; line-height: 1; padding: 7px 10px; border-radius: 10px; }
-
-/* Проблемы */
-.pains { list-style: none; padding: 0; margin: 0 0 16px; display: grid; gap: 10px; }
-.pains li { display: flex; gap: 14px; align-items: flex-start; background: #fff; border-radius: var(--radius); padding: 14px 16px; }
-.pains__ico { flex: none; width: 36px; height: 36px; border-radius: 50%; background: var(--err-bg); color: var(--price); font-size: 18px; display: inline-flex; align-items: center; justify-content: center; }
-.pains__note { font-weight: 600; border-left: 4px solid var(--trust); padding-left: 14px; margin: 0; }
 
 /* ---------- 2. Сочувствие ---------- */
 .empathy { background: var(--trust-bg); }
@@ -84,15 +80,12 @@
 .variant-b .footer { padding-bottom: 110px; }
 
 /* ---------- Планшет и desktop ---------- */
-/* Телефон: картинка первого экрана вплотную к следующему блоку, без пустого разрыва */
-@media (max-width: 599px) {
-  .hero-b2 { padding-bottom: 0; }
-  .hero-b2 + .section { padding-top: 20px; }
-}
 @media (min-width: 600px) {
   .hero-b2 { padding-top: 24px; }
   .hero-b2__title { font-size: 38px; text-align: center; }
-  .hero-b2__img { margin: 0 auto; width: 100%; max-width: 480px; border-radius: var(--radius); overflow: hidden; }
+  /* Планшет и десктоп: 2/3 ширины контента, не больше 600 px, чтобы первый экран не стал гигантским */
+  .hero-b2__img { width: 66.667%; max-width: 600px; margin: 0 24px 12px 0; border-radius: var(--radius); overflow: hidden; }
+  .hero-b2__note { font-size: 20px; }
 }
 @media (min-width: 768px) {
   .benefits { grid-template-columns: 1fr 1fr; }
@@ -102,8 +95,7 @@
 }
 @media (min-width: 900px) {
   .hero-b2 { padding: 40px 0 56px; }
-  .hero-b2__grid { grid-template-columns: 1fr; gap: 20px; justify-items: center; }
-  .hero-b2__img { margin: 0 auto; max-width: 480px; }
+  .hero-b2__grid { gap: 24px; }
   .hero-b2__title { font-size: 46px; margin: 0; text-align: center; }
   .variant-b .narrow-wrap { max-width: 820px; }
   .form-b .form-card { padding: 32px 36px; }
