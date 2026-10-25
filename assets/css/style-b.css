@@ -84,6 +84,11 @@
 .variant-b .footer { padding-bottom: 110px; }
 
 /* ---------- Планшет и desktop ---------- */
+/* Телефон: картинка первого экрана вплотную к следующему блоку, без пустого разрыва */
+@media (max-width: 599px) {
+  .hero-b2 { padding-bottom: 0; }
+  .hero-b2 + .section { padding-top: 20px; }
+}
 @media (min-width: 600px) {
   .hero-b2 { padding-top: 24px; }
   .hero-b2__title { font-size: 38px; text-align: center; }
