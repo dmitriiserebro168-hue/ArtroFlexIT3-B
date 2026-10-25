@@ -467,28 +467,69 @@
     return d.replace(/^(\d{3})(\d{1,3})(\d*)$/, function (m, a, b, c) { return [a, b, c].filter(Boolean).join(' '); });
   }
 
-  /* ---------- Форма ---------- */
-  function initForm(params) {
-    var form = $('#lead-form');
-    if (!form) return;
-    var name = $('#f-name'), phone = $('#f-phone'), consent = $('#f-consent');
-    var btn = $('#f-submit'), formErr = $('#form-error');
+  /* ---------- Формы заявки ----------
+     На странице может быть несколько форм (короткая в первом экране и основная внизу).
+     Каждая обёрнута в [data-lead-root="<имя>"], элементы внутри помечены data-f="…". */
+  function uuid() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+  }
+
+  function send(payload) {
+    if (isDemo) {
+      return new Promise(function (res, rej) {
+        setTimeout(function () {
+          if (/^errore$/i.test(payload.name)) rej(new Error('demo'));
+          else res({ ok: true, lead_id: 'demo-' + payload.request_id.slice(0, 8) });
+        }, 900);
+      });
+    }
+    var ctrl = window.AbortController ? new AbortController() : null;
+    var t = ctrl && setTimeout(function () { ctrl.abort(); }, (cfg.form && cfg.form.timeoutMs) || 15000);
+    return fetch(cfg.form.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload),
+      signal: ctrl ? ctrl.signal : undefined,
+      credentials: 'same-origin'
+    }).then(function (r) {
+      if (t) clearTimeout(t);
+      return r.json().catch(function () { return {}; }).then(function (d) {
+        if (!r.ok || d.ok !== true || !d.lead_id) throw new Error(d.error || ('http_' + r.status));
+        return d;
+      });
+    }, function (e) { if (t) clearTimeout(t); throw e; });
+  }
+
+  function initForms(params) {
     var requireConsent = !(cfg.form && cfg.form.requireConsent === false);
-    if (!requireConsent) $('[data-consent-field]').remove();
+    $$('[data-lead-root]').forEach(function (root) { initLeadForm(root, params, requireConsent); });
+  }
+
+  function initLeadForm(root, params, requireConsent) {
+    var f = function (k) { return root.querySelector('[data-f="' + k + '"]'); };
+    var formName = root.getAttribute('data-lead-root');
+    var form = f('form');
+    if (!form) return;
+    var name = f('name'), phone = f('phone'), consent = f('consent');
+    var btn = f('submit'), formErr = f('error');
+    var nameErr = f('name-err'), phoneErr = f('phone-err'), consentErr = f('consent-err');
+    if (!requireConsent && f('consent-field')) { f('consent-field').remove(); consent = null; }
 
     var started = false, busy = false, pending = null;
 
     form.addEventListener('input', function () {
-      if (!started) { started = true; track('form_start'); }
+      if (!started) { started = true; track('form_start', { form: formName }); }
     });
 
     function setErr(input, errEl, show) {
-      errEl.hidden = !show;
+      if (errEl) errEl.hidden = !show;
       input.setAttribute('aria-invalid', show ? 'true' : 'false');
       var fld = input.closest('.field');
       if (fld) { fld.classList.toggle('is-invalid', show); if (show) fld.classList.remove('is-valid'); }
     }
-    var nameErr = $('#f-name-err'), phoneErr = $('#f-phone-err');
     var phoneField = phone.closest('.field');
 
     name.addEventListener('input', function () { setErr(name, nameErr, false); });
@@ -512,40 +553,7 @@
       phoneField.classList.toggle('is-valid', ok);
       setErr(phone, phoneErr, !!d && !ok);
     });
-    if (requireConsent) consent.addEventListener('change', function () { if (consent.checked) setErr(consent, $('#f-consent-err'), false); });
-
-    function uuid() {
-      if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-        var r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-      });
-    }
-
-    function send(payload) {
-      if (isDemo) {
-        return new Promise(function (res, rej) {
-          setTimeout(function () {
-            if (/^errore$/i.test(payload.name)) rej(new Error('demo'));
-            else res({ ok: true, lead_id: 'demo-' + payload.request_id.slice(0, 8) });
-          }, 900);
-        });
-      }
-      var ctrl = window.AbortController ? new AbortController() : null;
-      var t = ctrl && setTimeout(function () { ctrl.abort(); }, (cfg.form && cfg.form.timeoutMs) || 15000);
-      return fetch(cfg.form.endpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(payload),
-        signal: ctrl ? ctrl.signal : undefined,
-        credentials: 'same-origin'
-      }).then(function (r) {
-        if (t) clearTimeout(t);
-        return r.json().catch(function () { return {}; }).then(function (d) {
-          if (!r.ok || d.ok !== true || !d.lead_id) throw new Error(d.error || ('http_' + r.status));
-          return d;
-        });
-      }, function (e) { if (t) clearTimeout(t); throw e; });
-    }
+    if (consent) consent.addEventListener('change', function () { if (consent.checked) setErr(consent, consentErr, false); });
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -557,10 +565,10 @@
       var p = digits ? '+39' + digits : null;   // отправляем в формате +39…, как it2
       var badName = !validName(n);
       var badPhone = !p;
-      var badConsent = requireConsent && !consent.checked;
-      setErr(name, $('#f-name-err'), badName);
-      setErr(phone, $('#f-phone-err'), badPhone);
-      if (requireConsent) setErr(consent, $('#f-consent-err'), badConsent);
+      var badConsent = !!consent && !consent.checked;
+      setErr(name, nameErr, badName);
+      setErr(phone, phoneErr, badPhone);
+      if (consent) setErr(consent, consentErr, badConsent);
       if (badName || badPhone || badConsent) {
         (badName ? name : badPhone ? phone : consent).focus();
         return;
@@ -574,26 +582,26 @@
         request_id: pending.id,
         name: n,
         phone: p,
-        consent: requireConsent ? consent.checked : null,
+        consent: consent ? consent.checked : null,
         privacy_version: cfg.form && cfg.form.privacyVersion,
         offer_id: cfg.offerId,
         landing_version: cfg.landingVersion,
         // Чтобы оператор знал, действует ли персональная скидка для этого клиента
         offer_expires_at: personalEnd ? personalEnd.toISOString() : null,
         params: params,
-        website: $('#f-website').value
+        website: f('website') ? f('website').value : ''
       };
 
       busy = true;
       btn.setAttribute('aria-busy', 'true');
       btn.disabled = true;
-      track('form_submit');
+      track('form_submit', { form: formName });
 
       send(payload).then(function (d) {
-        track('lead_accepted', { lead_id: d.lead_id, duplicate: !!d.duplicate });
-        $('#success-phone').textContent = '+39 ' + prettyPhone(digits);
-        $('#form-card').hidden = true;
-        var s = $('#success');
+        track('lead_accepted', { lead_id: d.lead_id, duplicate: !!d.duplicate, form: formName });
+        if (f('success-phone')) f('success-phone').textContent = '+39 ' + prettyPhone(digits);
+        f('card').hidden = true;
+        var s = f('success');
         s.hidden = false;
         s.focus();
         done = true;
@@ -605,7 +613,7 @@
           setTimeout(function () { location.href = 'grazie.html?lid=' + encodeURIComponent(d.lead_id) + (location.search.indexOf('notrack=1') > -1 ? '&notrack=1' : ''); }, 400);
         }
       }).catch(function (err) {
-        track('lead_error', { reason: String(err && err.message || err).slice(0, 40) });
+        track('lead_error', { reason: String(err && err.message || err).slice(0, 40), form: formName });
         formErr.textContent = (err && err.message === 'rate_limited')
           ? 'Troppe richieste in poco tempo. Riprova tra qualche minuto.'
           : 'Non è stato possibile inviare la richiesta. Riprova.';
@@ -629,7 +637,7 @@
   initVideos();
   initFaq();
   initCta();
-  initForm(captureParams());
+  initForms(captureParams());
   initPixel();
   track('page_view', { landing_version: cfg.landingVersion });
 })();

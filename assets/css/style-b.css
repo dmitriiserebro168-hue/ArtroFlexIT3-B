@@ -17,6 +17,20 @@
 .hero-b2__img img { width: 100%; height: auto; display: block; }
 .hero-b2__note { margin: 0; font-size: 19px; line-height: 1.5; font-weight: 600; }
 
+/* Короткая форма после первого абзаца: только поля, галочка и кнопка */
+.quick-form { background: var(--bg-tint); border: 2px solid var(--cta); border-radius: var(--radius); padding: 14px; }
+.quick-form .field { margin-bottom: 10px; }
+.quick-form__row { display: grid; gap: 0; }
+.quick-form .field input[type="text"], .quick-form .phone { min-height: 52px; }
+.quick-form .field input[type="text"] { padding: 10px 14px; }
+.quick-form__consent { grid-template-columns: 26px 1fr; gap: 8px; margin-bottom: 12px; }
+.quick-form__consent input { width: 22px; height: 22px; }
+.quick-form__consent label { font-size: 15px; line-height: 1.35; }
+.quick-form .form-error { margin: 0 0 10px; }
+.quick-form__success { padding: 14px; box-shadow: none; }
+.quick-form__success p { margin: 0; }
+.quick-form:focus-within { border-color: var(--focus); }
+
 .hero-b2__badge { display: inline-block; background: var(--price); color: #fff; font-weight: 800; font-size: 20px; line-height: 1; padding: 7px 10px; border-radius: 10px; }
 
 /* ---------- 2. Сочувствие ---------- */
@@ -86,6 +100,9 @@
   /* Планшет и десктоп: на всю ширину блока */
   .hero-b2__img { margin: 0; border-radius: var(--radius); overflow: hidden; }
   .hero-b2__note { font-size: 20px; }
+  /* Планшет и десктоп: имя и телефон в одну строку */
+  .quick-form { padding: 18px 20px; }
+  .quick-form__row { grid-template-columns: 1fr 1fr; gap: 12px; }
 }
 @media (min-width: 768px) {
   .benefits { grid-template-columns: 1fr 1fr; }

@@ -80,24 +80,28 @@
     }
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    // Форма: первый фокус в полях, попытки отправки, ошибки, успех
-    var form = document.getElementById('lead-form');
-    if (form) {
+    // Формы (короткая в первом экране и основная): первый фокус в полях, попытки отправки, ошибки, успех.
+    // Названия событий общие — воронка в admin/stats.php считает обе формы; какая сработала, видно по клику btn-submit / btn-submit-quick.
+    document.querySelectorAll('[data-lead-root]').forEach(function (root) {
+      var q = function (k) { return root.querySelector('[data-f="' + k + '"]'); };
+      var form = q('form');
+      if (!form) return;
       form.addEventListener('focusin', function (e) {
-        if (e.target.id === 'f-name') pushOnce('f:name', 'form', 'focus-name');
-        if (e.target.id === 'f-phone') pushOnce('f:phone', 'form', 'focus-phone');
+        var k = e.target.getAttribute('data-f');
+        if (k === 'name') pushOnce('f:name', 'form', 'focus-name');
+        if (k === 'phone') pushOnce('f:phone', 'form', 'focus-phone');
       });
       form.addEventListener('submit', function () { push('form', 'submit'); }, true);
       // Ошибки показываются снятием атрибута hidden
-      [['f-name-err', 'error-name'], ['f-phone-err', 'error-phone'], ['f-consent-err', 'error-consent'], ['form-error', 'error-alert']].forEach(function (p) {
-        var n = document.getElementById(p[0]);
+      [['name-err', 'error-name'], ['phone-err', 'error-phone'], ['consent-err', 'error-consent'], ['error', 'error-alert']].forEach(function (p) {
+        var n = q(p[0]);
         if (n) new MutationObserver(function () { if (!n.hidden) push('form', p[1]); })
           .observe(n, { attributes: true, attributeFilter: ['hidden'] });
       });
-      var ok = document.getElementById('success');
+      var ok = q('success');
       if (ok) new MutationObserver(function () { if (!ok.hidden) pushOnce('f:ok', 'form', 'lead-ok'); })
         .observe(ok, { attributes: true, attributeFilter: ['hidden'] });
-    }
+    });
 
     // Время на странице (только пока вкладка видна) и уход
     function leave() {
