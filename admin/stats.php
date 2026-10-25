@@ -43,55 +43,55 @@ if (isset($_GET['logout'])) {
 
 function h($s): string { return htmlspecialchars((string)$s, ENT_QUOTES, 'UTF-8'); }
 
-// Элементы лендинга в порядке на странице (атрибут data-track в index.html)
+// Элементы лендинга B в порядке на странице (атрибут data-track в index.html). Формат с 25.10.2026.
 $REGISTRY = [
-    'cta-topbar'       => ['Кнопка', '«Richiedi una chiamata» в шапке'],
-    'sec-hero'         => ['Секция', 'Первый экран'],
-    'price-hero'       => ['Цена', 'Блок цены −50% (первый экран)'],
-    'timer-hero'       => ['Таймер', 'Таймер скидки и остаток (первый экран)'],
-    'cta-hero'         => ['Кнопка', '«Richiedi una chiamata» (первый экран)'],
-    'img-hero'         => ['Картинка', 'Иллюстрация колена (первый экран)'],
-    'sec-solution'     => ['Секция', '«Scopri Artroflex Active»'],
-    'cta-after-product'=> ['Кнопка', '«Richiedi una chiamata» (после продукта)'],
-    'sec-mechanism'    => ['Секция', 'Компоненты и их роль'],
-    'img-before-after' => ['Картинка', '«Dolore e rigidità? → Torna a muoverti»'],
-    'sec-composition'  => ['Секция', 'Состав и применение'],
-    'sec-reviews'      => ['Секция', 'Отзывы'],
-    'reviews-prev'     => ['Кнопка', 'Отзывы: стрелка назад'],
-    'reviews-next'     => ['Кнопка', 'Отзывы: стрелка вперёд'],
-    'btn-reviews-more' => ['Кнопка', 'Отзывы: «Mostra altre…» (телефон)'],
-    'sec-experts'      => ['Секция', 'Мнение специалистов'],
-    'experts-prev'     => ['Кнопка', 'Специалисты: стрелка назад'],
-    'experts-next'     => ['Кнопка', 'Специалисты: стрелка вперёд'],
-    'btn-experts-more' => ['Кнопка', 'Специалисты: «Mostra altri…» (телефон)'],
-    'sec-trust'        => ['Секция', 'Цифры и документы'],
-    'cta-after-trust'  => ['Кнопка', '«Richiedi una chiamata» (после доверия)'],
-    'sec-offer'        => ['Секция', 'Предложение и цена'],
-    'price-offer'      => ['Цена', 'Блок цены (предложение)'],
-    'cta-offer'        => ['Кнопка', '«Richiedi una chiamata» (предложение)'],
-    'sec-terms'        => ['Секция', 'Доставка, оплата, гарантия'],
-    'sec-faq'          => ['Секция', 'Вопросы и ответы'],
-    'faq-all'          => ['Кнопка', '«Mostra tutte le risposte»'],
-    'faq-1'            => ['Вопрос', '«È sicuro? Ci sono effetti indesiderati?»'],
-    'faq-2'            => ['Вопрос', '«Quanto dura una confezione?»'],
-    'faq-3'            => ['Вопрос', '«Quando riceverò il prodotto?»'],
-    'faq-4'            => ['Вопрос', '«Posso pagare alla consegna?»'],
-    'faq-5'            => ['Вопрос', '«…se assumo altri medicinali?»'],
-    'faq-6'            => ['Вопрос', '«Che cosa succede dopo…?»'],
-    'sec-final'        => ['Секция', 'Финальное предложение (таймер, остаток)'],
-    'timer-final'      => ['Таймер', 'Таймер персональной скидки'],
-    'cta-final'        => ['Кнопка', '«Richiedi una chiamata» (финал)'],
-    'sec-form'         => ['Секция', 'Форма заявки'],
-    'link-privacy'     => ['Ссылка', 'Informativa privacy (в согласии)'],
-    'btn-submit'       => ['Кнопка', '«Richiedi una chiamata» (отправка формы)'],
-    'cta-sticky'       => ['Кнопка', 'Липкая кнопка внизу экрана'],
+    'sec-hero'            => ['Секция', 'Первый экран: заголовок «il miglior alleato…»'],
+    'img-hero'            => ['Картинка', 'Креатив «Scegli Artroflex! 39 €»'],
+    'sec-intro'           => ['Секция', 'Абзац «ArtroFlex Active è un complesso innovativo…»'],
+    'sec-quick-form'      => ['Секция', 'Короткая форма (первый экран)'],
+    'link-privacy-quick'  => ['Ссылка', 'Informativa privacy (короткая форма)'],
+    'btn-submit-quick'    => ['Кнопка', '«ORDINA ORA» (короткая форма)'],
+    'sec-studies'         => ['Секция', '«Gli studi confermano l\'efficacia…»'],
+    'sec-product'         => ['Секция', 'Продукт: формула, преимущества'],
+    'details-composition' => ['Раскрытие', 'Состав (полная таблица)'],
+    'details-usage'       => ['Раскрытие', 'Способ применения и предупреждения'],
+    'sec-how'             => ['Секция', '«Come ti aiutiamo»: звонок, доставка, оплата'],
+    'sec-offer'           => ['Секция', 'Предложение 39 € вместо 78 €'],
+    'price-offer'         => ['Цена', 'Блок цены в предложении'],
+    'cta-offer'           => ['Кнопка', '«ORDINA ORA» (предложение)'],
+    'sec-form'            => ['Секция', 'Основная форма'],
+    'link-privacy-main'   => ['Ссылка', 'Informativa privacy (основная форма)'],
+    'btn-submit-main'     => ['Кнопка', '«ORDINA ORA» (основная форма)'],
+    'sec-faq'             => ['Секция', 'Вопросы и ответы'],
+    'faq-1'               => ['Вопрос', '«Inviare la richiesta significa acquistare?»'],
+    'faq-2'               => ['Вопрос', '«Chi mi contatterà?»'],
+    'faq-3'               => ['Вопрос', '«Quanto dura una confezione?»'],
+    'faq-4'               => ['Вопрос', '«Come e quando pago?»'],
+    'faq-5'               => ['Вопрос', '«Posso prenderlo se assumo farmaci?»'],
+    'link-terms'          => ['Ссылка', 'Подвал: Condizioni dell\'offerta'],
+    'link-returns'        => ['Ссылка', 'Подвал: Recesso e resi'],
+    'link-privacy-footer' => ['Ссылка', 'Подвал: Informativa privacy'],
+    'link-cookie'         => ['Ссылка', 'Подвал: Cookie Policy'],
+    'cta-sticky'          => ['Кнопка', '«ORDINA ORA» — закреплённая внизу экрана'],
+];
+// Формы: события form = <форма>-<шаг> (track.js)
+$FORMS = ['quick' => 'Короткая (первый экран)', 'main' => 'Основная (внизу)'];
+$FORM_STEPS = [
+    'focus-name'    => 'Нажали в поле «Nome»',
+    'focus-phone'   => 'Нажали в поле телефона',
+    'submit'        => 'Нажали «ORDINA ORA»',
+    'error-name'    => 'Ошибка имени',
+    'error-phone'   => 'Ошибка телефона',
+    'error-consent' => 'Сняли галочку согласия',
+    'error-alert'   => 'Ошибка отправки (сервер/партнёр)',
+    'lead-ok'       => 'Заявка принята',
 ];
 $SECTIONS = array_values(array_filter(array_keys($REGISTRY), fn($k) => strpos($k, 'sec-') === 0));
 
 $LEAD_STATUS = [
-    'ok'              => 'Принята Webvork',
-    'api_error'       => 'Отклонена Webvork',
-    'network'         => 'Webvork недоступен',
+    'ok'              => 'Принята партнёром',
+    'api_error'       => 'Отклонена партнёром',
+    'network'         => 'Партнёр недоступен',
     'config'          => 'Не настроен токен',
     'invalid_name'    => 'Неверное имя',
     'invalid_phone'   => 'Неверный телефон',
@@ -105,7 +105,7 @@ $LEAD_STATUS = [
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>Artroflex IT3 — статистика</title>
+<title>ArtroFlex Active B — статистика</title>
 <style>
   :root{--bg:#f4f6f5;--card:#fff;--ink:#163f35;--text:#1c2024;--muted:#5d6a66;--line:#e1e7e4;--bar:#1f6b58;--bar2:#c2410c;--ok:#1f6b58;--bad:#b42318}
   *{box-sizing:border-box}
@@ -155,7 +155,7 @@ $LEAD_STATUS = [
 <?php exit; endif; ?>
 <?php if (!$authed): ?>
   <form class="wrap login card" method="post" action="stats.php">
-    <h1>Artroflex IT3 — статистика</h1>
+    <h1>ArtroFlex Active B — статистика</h1>
     <?php if (!empty($loginError)): ?><p class="err">Неверный пароль</p><?php endif; ?>
     <input type="password" name="password" placeholder="Пароль" autofocus autocomplete="current-password">
     <button type="submit">Войти</button>
@@ -183,12 +183,7 @@ $params = [];
 if ($src !== '') { $where .= ' AND src = ?'; $params[] = $src; }
 if ($dev !== '') { $where .= ' AND device = ?'; $params[] = $dev; }
 
-// Вариант лендинга: B пишет landing_version = artro-it-b-1, всё остальное (пусто, tsl-it-1.0) — A
-const B_VERSION = 'artro-it-b-%'; // все версии B: b-1, b-2…
-$ver = in_array($_GET['v'] ?? '', ['a', 'b'], true) ? $_GET['v'] : '';
-$leadVer = '';
-if ($ver === 'b') { $where .= " AND lv LIKE '" . B_VERSION . "'"; $leadVer = " AND landing_version LIKE '" . B_VERSION . "'"; }
-if ($ver === 'a') { $where .= " AND lv NOT LIKE '" . B_VERSION . "'"; $leadVer = " AND (landing_version IS NULL OR landing_version NOT LIKE '" . B_VERSION . "')"; }
+$leadVer = ''; // в базе artroflex3b только вариант B — фильтр A/B не нужен
 
 function q(PDO $pdo, string $sql, array $params) { $st = $pdo->prepare($sql); $st->execute($params); return $st; }
 function pct($a, $b) { return $b > 0 ? round($a / $b * 100, 1) : 0; }
@@ -197,7 +192,7 @@ function mask($p) { $p = (string)$p; return strlen($p) > 6 ? substr($p, 0, 6) . 
 function rome($utc) { $d = new DateTime((string)$utc, new DateTimeZone('UTC')); $d->setTimezone(new DateTimeZone('Europe/Rome')); return $d->format('d.m H:i'); }
 ?>
 <div class="wrap">
-  <h1>Artroflex Active IT3 — статистика <a class="muted" style="font-size:.8rem;float:right" href="stats.php?logout=1">выйти</a></h1>
+  <h1>ArtroFlex Active B (it3b) — статистика <a class="muted" style="font-size:.8rem;float:right" href="stats.php?logout=1">выйти</a></h1>
 
   <div class="tabs">
     <a class="<?= $tab === 'behavior' ? 'on' : '' ?>" href="<?= h(link_with(['tab' => ''])) ?>">Поведение посетителей</a>
@@ -207,10 +202,6 @@ function rome($utc) { $d = new DateTime((string)$utc, new DateTimeZone('UTC')); 
   <div class="card filters">
     <?php foreach ([1 => 'Сутки', 7 => '7 дней', 30 => '30 дней', 90 => '90 дней'] as $d => $label): ?>
       <a class="<?= $d === $days ? 'on' : '' ?>" href="<?= h(link_with(['d' => $d])) ?>"><?= $label ?></a>
-    <?php endforeach; ?>
-    <span class="muted">|</span>
-    <?php foreach (['' => 'A + B', 'a' => 'Вариант A', 'b' => 'Вариант B'] as $k => $label): ?>
-      <a class="<?= $k === $ver ? 'on' : '' ?>" href="<?= h(link_with(['v' => $k])) ?>"><?= $label ?></a>
     <?php endforeach; ?>
     <?php if ($tab === 'behavior'):
       $sources = $pdo->query("SELECT src, COUNT(DISTINCT pv) n FROM track_event WHERE type='load' AND created_at >= UTC_TIMESTAMP() - INTERVAL 90 DAY GROUP BY src ORDER BY n DESC LIMIT 30")->fetchAll(PDO::FETCH_ASSOC); ?>
@@ -251,7 +242,7 @@ function rome($utc) { $d = new DateTime((string)$utc, new DateTimeZone('UTC')); 
     $rows     = $pdo->query("SELECT * FROM lead_log WHERE $lw ORDER BY id DESC LIMIT 200")->fetchAll(PDO::FETCH_ASSOC);
 ?>
   <div class="kpis" style="margin-bottom:14px">
-    <div class="kpi"><b><?= $okCount ?></b><span>заявок принято Webvork</span></div>
+    <div class="kpi"><b><?= $okCount ?></b><span>заявок принято партнёром</span></div>
     <div class="kpi"><b><?= (int)(($byStatus['api_error'] ?? 0) + ($byStatus['network'] ?? 0) + ($byStatus['config'] ?? 0)) ?></b><span>ошибок отправки</span></div>
     <div class="kpi"><b><?= (int)(($byStatus['invalid_name'] ?? 0) + ($byStatus['invalid_phone'] ?? 0) + ($byStatus['invalid_consent'] ?? 0)) ?></b><span>отклонено проверкой формы</span></div>
     <div class="kpi"><b><?= $avgMs ? round($avgMs / 1000, 1) . ' с' : '—' ?></b><span>среднее время отправки</span></div>
@@ -283,7 +274,7 @@ function rome($utc) { $d = new DateTime((string)$utc, new DateTimeZone('UTC')); 
     <h2>Последние записи (до 200)</h2>
     <p class="muted" style="margin-top:-4px">Время — Рим. Телефон скрыт частично; полные данные — таблица <code>lead_log</code> в phpMyAdmin.</p>
     <table>
-      <tr><th>Время</th><th>Статус</th><th>Имя</th><th>Телефон</th><th>Кампания</th><th>Webvork</th><th class="num">мс</th><th>Попытки</th></tr>
+      <tr><th>Время</th><th>Статус</th><th>Имя</th><th>Телефон</th><th>Кампания</th><th>Ответ партнёра</th><th class="num">мс</th><th>Попытки</th></tr>
       <?php foreach ($rows as $r):
           $utm = $r['utm'] ? (json_decode($r['utm'], true) ?: []) : [];
           $s = $r['status']; ?>
@@ -307,11 +298,17 @@ function rome($utc) { $d = new DateTime((string)$utc, new DateTimeZone('UTC')); 
     $visits    = (int)q($pdo, "SELECT COUNT(DISTINCT pv) FROM track_event WHERE type='load' AND $where", $params)->fetchColumn();
     $avgTime   = (float)q($pdo, "SELECT AVG(m) FROM (SELECT MAX(val) m FROM track_event WHERE type='leave' AND $where GROUP BY pv) x", $params)->fetchColumn();
     $avgDepth  = (float)q($pdo, "SELECT AVG(m) FROM (SELECT MAX(val) m FROM track_event WHERE type='depth' AND $where GROUP BY pv) x", $params)->fetchColumn();
-    $ctaVisits = (int)q($pdo, "SELECT COUNT(DISTINCT pv) FROM track_event WHERE type='click' AND (el LIKE 'cta-%' OR el='btn-submit') AND $where", $params)->fetchColumn();
+    $ctaVisits = (int)q($pdo, "SELECT COUNT(DISTINCT pv) FROM track_event WHERE type='click' AND (el LIKE 'cta-%' OR el LIKE 'btn-submit-%') AND $where", $params)->fetchColumn();
 
-    $form = [];
-    foreach (['focus-name', 'focus-phone', 'submit', 'error-phone', 'error-name', 'error-consent', 'error-alert', 'lead-ok'] as $f) {
-        $form[$f] = (int)q($pdo, "SELECT COUNT(DISTINCT pv) FROM track_event WHERE type='form' AND el=? AND $where", array_merge([$f], $params))->fetchColumn();
+    // Воронка: визиты с шагом в каждой форме и в любой из них
+    $funnel = [];
+    foreach ($FORM_STEPS as $step => $label) {
+        foreach (array_keys($FORMS) as $fn) {
+            $funnel[$step][$fn] = (int)q($pdo, "SELECT COUNT(DISTINCT pv) FROM track_event WHERE type='form' AND el=? AND $where", array_merge([$fn . '-' . $step], $params))->fetchColumn();
+        }
+        $in = implode(',', array_fill(0, count($FORMS), '?'));
+        $funnel[$step]['all'] = (int)q($pdo, "SELECT COUNT(DISTINCT pv) FROM track_event WHERE type='form' AND el IN ($in) AND $where",
+            array_merge(array_map(fn($fn) => $fn . '-' . $step, array_keys($FORMS)), $params))->fetchColumn();
     }
     $leadsOk = (int)$pdo->query("SELECT COUNT(*) FROM lead_log WHERE status='ok' AND created_at >= UTC_TIMESTAMP() - INTERVAL $days DAY$leadVer")->fetchColumn();
 
@@ -346,8 +343,8 @@ function rome($utc) { $d = new DateTime((string)$utc, new DateTimeZone('UTC')); 
     <div class="kpi"><b><?= $avgTime ? gmdate($avgTime >= 3600 ? 'G:i:s' : 'i:s', (int)$avgTime) : '—' ?></b><span>среднее время на странице</span></div>
     <div class="kpi"><b><?= $avgDepth ? round($avgDepth) . '%' : '—' ?></b><span>средняя глубина прокрутки</span></div>
     <div class="kpi"><b><?= pct($ctaVisits, $visits) ?>%</b><span>нажали кнопку (<?= $ctaVisits ?>)</span></div>
-    <div class="kpi"><b><?= $form['lead-ok'] ?></b><span>отправили заявку (<?= pct($form['lead-ok'], $visits) ?>%)</span></div>
-    <div class="kpi"><b><?= $leadsOk ?></b><span>лидов принято Webvork<?= ($src !== '' || $dev !== '') ? ' (без фильтров)' : '' ?></span></div>
+    <div class="kpi"><b><?= $funnel['lead-ok']['all'] ?></b><span>отправили заявку (<?= pct($funnel['lead-ok']['all'], $visits) ?>%): короткая <?= $funnel['lead-ok']['quick'] ?>, основная <?= $funnel['lead-ok']['main'] ?></span></div>
+    <div class="kpi"><b><?= $leadsOk ?></b><span>лидов принято партнёром<?= ($src !== '' || $dev !== '') ? ' (без фильтров)' : '' ?></span></div>
   </div>
 
   <div class="card">
@@ -361,15 +358,16 @@ function rome($utc) { $d = new DateTime((string)$utc, new DateTimeZone('UTC')); 
     </table>
   </div>
 
-  <div class="card">
-    <h2>Воронка формы</h2>
+  <div class="card scroll">
+    <h2>Воронка форм</h2>
+    <p class="muted" style="margin-top:-4px">Число визитов, где был шаг, и % от всех визитов. «Обе» — визит засчитан один раз, даже если человек пользовался двумя формами.</p>
     <table>
-      <?php foreach (['focus-name' => 'Нажали в поле «Nome»', 'focus-phone' => 'Нажали в поле «Numero di telefono»', 'submit' => 'Нажали «Richiedi una chiamata» в форме',
-                     'error-phone' => 'Получили ошибку телефона', 'error-name' => 'Получили ошибку имени', 'error-consent' => 'Сняли согласие и получили ошибку',
-                     'error-alert' => 'Ошибка отправки', 'lead-ok' => 'Заявка принята'] as $k => $label): ?>
-        <tr><td><?= $label ?></td>
-          <td><div class="bar <?= strpos($k, 'error') === 0 ? 'c' : '' ?>"><i style="width:<?= pct($form[$k], $visits) ?>%"></i></div></td>
-          <td class="num" style="width:130px"><?= $form[$k] ?> · <?= pct($form[$k], $visits) ?>%</td></tr>
+      <tr><th>Шаг</th><?php foreach ($FORMS as $fn => $label): ?><th class="num"><?= h($label) ?></th><?php endforeach; ?><th>Обе формы</th><th class="num"></th></tr>
+      <?php foreach ($FORM_STEPS as $k => $label): $all = $funnel[$k]['all']; ?>
+        <tr><td><?= h($label) ?></td>
+          <?php foreach (array_keys($FORMS) as $fn): ?><td class="num"><?= $funnel[$k][$fn] ?> · <?= pct($funnel[$k][$fn], $visits) ?>%</td><?php endforeach; ?>
+          <td><div class="bar <?= strpos($k, 'error') === 0 ? 'c' : '' ?>"><i style="width:<?= pct($all, $visits) ?>%"></i></div></td>
+          <td class="num" style="width:110px"><?= $all ?> · <?= pct($all, $visits) ?>%</td></tr>
       <?php endforeach; ?>
     </table>
   </div>
@@ -406,7 +404,7 @@ function rome($utc) { $d = new DateTime((string)$utc, new DateTimeZone('UTC')); 
   </div>
 <?php endif; ?>
 
-  <p class="muted">Данные хранятся 90 дней. Свои визиты можно не учитывать: открывайте лендинг с <code>?notrack=1</code>. Редактор отзывов — <a href="./">/admin/</a>.</p>
+  <p class="muted">Данные хранятся 90 дней. Свои визиты можно не учитывать: открывайте лендинг с <code>?notrack=1</code>. Формат событий — с 25.10.2026.</p>
 </div>
 </body>
 </html>

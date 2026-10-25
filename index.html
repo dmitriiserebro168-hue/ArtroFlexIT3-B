@@ -36,10 +36,10 @@
     <h1 id="hero-title" class="hero-b2__title">ArtroFlex Active – il miglior alleato contro il dolore alle articolazioni!</h1>
     <!-- Первое изображение — горизонтальный креатив заказчика во всю ширину, текст сразу под ним (25.10.2026) -->
     <div class="hero-b2__body">
-      <picture class="hero-b2__img">
+      <picture class="hero-b2__img" data-track="img-hero">
         <img src="assets/img/hero-scegli-wide.jpg" width="1733" height="907" alt="Scegli ArtroFlex! 39 € invece di 78 €, −50%. Flacone di ArtroFlex Active, 30 capsule" fetchpriority="high">
       </picture>
-      <p class="hero-b2__note" data-track="sec-problem">ArtroFlex Active è un complesso innovativo progettato per mantenere la salute delle articolazioni. Contiene condroitin solfato e collagene marino, due componenti chiave che aiutano a ridurre il disagio e a ripristinare i tessuti articolari.</p>
+      <p class="hero-b2__note" data-track="sec-intro">ArtroFlex Active è un complesso innovativo progettato per mantenere la salute delle articolazioni. Contiene condroitin solfato e collagene marino, due componenti chiave che aiutano a ridurre il disagio e a ripristinare i tessuti articolari.</p>
 
       <!-- Короткая форма (дублирует основную внизу, та же отправка в api/lead.php) — 25.10.2026 -->
       <div class="quick-form" data-lead-root="quick" data-track="sec-quick-form">
@@ -70,7 +70,7 @@
             <!-- Галочка отмечена по умолчанию — как в основной форме -->
             <div class="field field--check quick-form__consent" data-f="consent-field">
               <input id="q-consent" data-f="consent" name="consent" type="checkbox" value="1" checked aria-describedby="q-consent-err">
-              <label for="q-consent">Ho letto l'<a href="privacy.html" target="_blank" rel="noopener">Informativa privacy</a> e chiedo di essere contattato.</label>
+              <label for="q-consent">Ho letto l'<a data-track="link-privacy-quick" href="privacy.html" target="_blank" rel="noopener">Informativa privacy</a> e chiedo di essere contattato.</label>
               <p class="field__err" id="q-consent-err" data-f="consent-err" hidden>Conferma la tua richiesta prima di continuare.</p>
             </div>
 
@@ -91,7 +91,7 @@
 </section>
 
 <!-- ============ 2. СОЧУВСТВИЕ И ЗАБОТА ============ -->
-<section class="section empathy" aria-labelledby="empathy-title" data-track="sec-empathy">
+<section class="section empathy" aria-labelledby="empathy-title" data-track="sec-studies">
   <div class="wrap narrow-wrap">
     <h2 id="empathy-title">Gli studi confermano l'efficacia di ArtroFlex Active!</h2>
     <p>Le malattie articolari, come artrite, artrosi, poliartrite, coxartrosi e osteocondrosi, stanno diventando sempre più frequenti e colpiscono non solo gli anziani. Il ritmo di vita moderno, la vita sedentaria e il carico sulle articolazioni portano al loro precoce deterioramento.</p>
@@ -196,7 +196,7 @@ Il collagene marino arricchisce le articolazioni con gli elementi necessari, sup
       <div class="offer-b__body">
         <h2 id="offer-title">Un'offerta pensata per te</h2>
         <p class="offer-b__line"><span data-t="packs">1 confezione</span> da <span data-t="units">30 capsule</span>:</p>
-        <p class="offer-b__price"><s data-price="old">78,00 €</s> <strong data-price="current">39,00 €</strong> <span class="hero-b2__badge">−<span data-price="discountPercent">50</span>%</span></p>
+        <p class="offer-b__price" data-track="price-offer"><s data-price="old">78,00 €</s> <strong data-price="current">39,00 €</strong> <span class="hero-b2__badge">−<span data-price="discountPercent">50</span>%</span></p>
         <p class="offer-b__course"><strong>Percorso da 3 confezioni o più:</strong> sconti ancora maggiori. Te li comunica lo specialista durante la chiamata.</p>
         <ul class="offer-b__perks">
           <li>Consulenza sul tuo problema e scelta del percorso più adatto</li>
@@ -244,13 +244,13 @@ Il collagene marino arricchisce le articolazioni con gli elementi necessari, sup
           <!-- Галочка отмечена по умолчанию — решение заказчика 18.10.2026, как в варианте A. -->
           <div class="field field--check" data-consent-field data-f="consent-field">
             <input id="f-consent" data-f="consent" name="consent" type="checkbox" value="1" checked aria-describedby="f-consent-err">
-            <label for="f-consent">Ho letto l'<a data-track="link-privacy" href="privacy.html" target="_blank" rel="noopener">Informativa privacy</a> e richiedo di essere contattato telefonicamente per ricevere informazioni su ArtroFlex Active.</label>
+            <label for="f-consent">Ho letto l'<a data-track="link-privacy-main" href="privacy.html" target="_blank" rel="noopener">Informativa privacy</a> e richiedo di essere contattato telefonicamente per ricevere informazioni su ArtroFlex Active.</label>
             <p class="field__err" id="f-consent-err" data-f="consent-err" hidden>Conferma la tua richiesta prima di continuare.</p>
           </div>
 
           <p class="form-error" id="form-error" data-f="error" role="alert" hidden>Non è stato possibile inviare la richiesta. Riprova.</p>
 
-          <button class="btn btn--cta btn--block" type="submit" id="f-submit" data-f="submit" data-track="btn-submit">
+          <button class="btn btn--cta btn--block" type="submit" id="f-submit" data-f="submit" data-track="btn-submit-main">
             <span class="btn__label">ORDINA ORA</span>
             <span class="btn__busy" aria-hidden="true">Invio in corso…</span>
           </button>
@@ -310,10 +310,10 @@ Il collagene marino arricchisce le articolazioni con gli elementi necessari, sup
       <div>
         <h2 class="footer__h">Informazioni</h2>
         <ul class="footer__links">
-          <li><a href="termini.html">Condizioni dell'offerta</a></li>
-          <li><a href="termini.html#resi">Recesso e resi</a></li>
-          <li><a href="privacy.html">Informativa privacy</a></li>
-          <li><a href="privacy.html#cookie">Cookie Policy</a></li>
+          <li><a data-track="link-terms" href="termini.html">Condizioni dell'offerta</a></li>
+          <li><a data-track="link-returns" href="termini.html#resi">Recesso e resi</a></li>
+          <li><a data-track="link-privacy-footer" href="privacy.html">Informativa privacy</a></li>
+          <li><a data-track="link-cookie" href="privacy.html#cookie">Cookie Policy</a></li>
         </ul>
       </div>
     </div>

@@ -80,26 +80,28 @@
     }
     window.addEventListener('scroll', onScroll, { passive: true });
 
-    // Формы (короткая в первом экране и основная): первый фокус в полях, попытки отправки, ошибки, успех.
-    // Названия событий общие — воронка в admin/stats.php считает обе формы; какая сработала, видно по клику btn-submit / btn-submit-quick.
+    // Формы: первый фокус в полях, попытки отправки, ошибки, успех.
+    // Событие = <форма>-<что>: quick-… — короткая форма в первом экране, main-… — основная внизу
+    // (например quick-focus-name, main-submit, quick-lead-ok). Формат с 25.10.2026, данные до него удалены.
     document.querySelectorAll('[data-lead-root]').forEach(function (root) {
+      var fn = root.getAttribute('data-lead-root');
       var q = function (k) { return root.querySelector('[data-f="' + k + '"]'); };
       var form = q('form');
       if (!form) return;
       form.addEventListener('focusin', function (e) {
         var k = e.target.getAttribute('data-f');
-        if (k === 'name') pushOnce('f:name', 'form', 'focus-name');
-        if (k === 'phone') pushOnce('f:phone', 'form', 'focus-phone');
+        if (k === 'name') pushOnce('f:' + fn + ':name', 'form', fn + '-focus-name');
+        if (k === 'phone') pushOnce('f:' + fn + ':phone', 'form', fn + '-focus-phone');
       });
-      form.addEventListener('submit', function () { push('form', 'submit'); }, true);
+      form.addEventListener('submit', function () { push('form', fn + '-submit'); }, true);
       // Ошибки показываются снятием атрибута hidden
       [['name-err', 'error-name'], ['phone-err', 'error-phone'], ['consent-err', 'error-consent'], ['error', 'error-alert']].forEach(function (p) {
         var n = q(p[0]);
-        if (n) new MutationObserver(function () { if (!n.hidden) push('form', p[1]); })
+        if (n) new MutationObserver(function () { if (!n.hidden) push('form', fn + '-' + p[1]); })
           .observe(n, { attributes: true, attributeFilter: ['hidden'] });
       });
       var ok = q('success');
-      if (ok) new MutationObserver(function () { if (!ok.hidden) pushOnce('f:ok', 'form', 'lead-ok'); })
+      if (ok) new MutationObserver(function () { if (!ok.hidden) pushOnce('f:' + fn + ':ok', 'form', fn + '-lead-ok'); })
         .observe(ok, { attributes: true, attributeFilter: ['hidden'] });
     });
 
