@@ -309,6 +309,12 @@ function leadcenter_send(array $cfg, array $payload): array
     return [$code, $resp, $err, (int)round((microtime(true) - $t0) * 1000)];
 }
 
+/** Cookie пикселя Meta (_fbp / _fbc) в формате fb.1.<время>.<значение>, иначе null. */
+function fb_cookie($v): ?string
+{
+    return is_string($v) && strlen($v) <= 500 && preg_match('/^fb\.\d\.\d+\.[A-Za-z0-9_.\-]+$/', $v) ? $v : null;
+}
+
 /** Проверка ключа LeadCenter без создания лида: GET …/api/ping. */
 function leadcenter_ping(array $cfg): ?array
 {
@@ -385,6 +391,9 @@ if (!empty($cfg['leadcenter']['url']) && !empty($cfg['leadcenter']['key']) && fu
         'referrer'        => $LEAD['ref'],
         'landing_version' => $lead['landing_version'],
         'site'            => $_SERVER['HTTP_HOST'] ?? '',
+        // Cookie пикселя Meta — для Conversions API (Purchase при апруве)
+        'fbp'             => fb_cookie($in['fbp'] ?? null),
+        'fbc'             => fb_cookie($in['fbc'] ?? null),
     ] + $LEAD['utm']);
     $ATTEMPTS_LOG[] = [
         'n' => 1, 'host' => parse_url((string)$cfg['leadcenter']['url'], PHP_URL_HOST), 'http' => $lcCode,

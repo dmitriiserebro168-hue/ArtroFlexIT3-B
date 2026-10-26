@@ -41,6 +41,20 @@
     if (a.metaPixelId && !isDemo) loadPixel(a.metaPixelId);
   }
 
+  // InitiateCheckout — один раз за визит, когда посетитель начал заполнять любую форму заявки
+  var checkoutFired = false;
+  function pixelCheckout() {
+    if (checkoutFired || !window.fbq) return;
+    checkoutFired = true;
+    window.fbq('track', 'InitiateCheckout');
+  }
+
+  // Cookie пикселя (_fbp, _fbc) — уходят с заявкой, чтобы LeadCenter передал их в Conversions API при апруве
+  function cookie(name) {
+    var m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
+    return m ? decodeURIComponent(m[1]) : null;
+  }
+
   /* ---------- UTM и рекламные параметры ---------- */
   var TRACK_PARAMS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term',
     'campaign_id', 'adset_id', 'ad_id', 'fbclid'];
@@ -521,7 +535,7 @@
     var started = false, busy = false, pending = null;
 
     form.addEventListener('input', function () {
-      if (!started) { started = true; track('form_start', { form: formName }); }
+      if (!started) { started = true; track('form_start', { form: formName }); pixelCheckout(); }
     });
 
     function setErr(input, errEl, show) {
@@ -589,6 +603,8 @@
         // Чтобы оператор знал, действует ли персональная скидка для этого клиента
         offer_expires_at: personalEnd ? personalEnd.toISOString() : null,
         params: params,
+        fbp: cookie('_fbp'),
+        fbc: cookie('_fbc'),
         website: f('website') ? f('website').value : ''
       };
 
